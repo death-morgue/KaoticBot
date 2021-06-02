@@ -1,4 +1,4 @@
-<p align="center" ><img alt="Kaotic Bot" src="https://github.com/death-morgue/KaoticBot/blob/main/lib/media/img/kaotic.jpg?raw=true"></p>
+<p align="center" ><img alt="Kaotic Bot" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/kaotic.jpg"></p>
 <h1 align="center">Kaotic Bot (WhatsApp Bot)</h1>
 <p align="center">
   <img alt"GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/death-morgue/kaoticbot">
