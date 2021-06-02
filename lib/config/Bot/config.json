@@ -1,0 +1,22 @@
+{
+	"idioma": "pt",
+	"donos": ["557588737769@c.us", "553199949012@c.us"],
+	"help1":"557588737769@c.us",
+	"help2":"553199949012@c.us",
+	"ddi": "55",
+	"prefixo": "/",
+	"apifla": "a769f02ff2944bbfb44f69c674804e10",
+	"nobg": "dATHButFd6atyHUn8kNQTdYy",
+	"wallhv": "ZrG60XaTr5YV3a2ashVY8Y1WGatbh5Jl",
+	"deepai": "0ec53446-8261-47c8-b5e9-4bd337a08e37",
+	"gpLimit": "40",
+	"memberReq": "20",
+	"nomeDono1": "Deyvisson",
+	"nomeDono2":"LuixGuxto",
+	"pack": "KaoticBot",
+	"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36",
+	"tempoJogo": "3",
+	"antiFlood": "12",
+	"maxSize": "64",
+	"WinTime": "30"
+}

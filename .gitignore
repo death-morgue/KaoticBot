@@ -1,0 +1,10 @@
+node_modules
+.node-persist
+Kaotic Bot.data.json
+package-lock.json
+logs
+
+# managed
+**.data.json
+**.node-persist**
+# end managed
