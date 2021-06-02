@@ -11,12 +11,12 @@
   "author": "Deyvisson && LuixGuxto",
   "repository": {
     "type": "git",
-    "url": "https://github.com/KillovSky/iris.git"
+    "url": "https://github.com/death-morgue/KaoticBot.git"
   },
   "bugs": {
-    "url": "https://github.com/KillovSky/iris/issues"
+    "url": "https://github.com/death-morgue/KaoticBot/issues"
   },
-  "homepage": "https://github.com/KillovSky/iris",
+  "homepage": "https://github.com/death-morgue/KaoticBot",
   "license": "MIT",
   "dependencies": {
     "@dada513/wikipedia-search": "^1.0.1",
@@ -50,6 +50,7 @@
     "nodejs": "0.0.0",
     "npm": "^7.15.1",
     "parse-ms": "^2.1.0",
+    "prom-client": "^13.1.0",
     "promise": "^8.1.0",
     "puppeteer": "^8.0.0",
     "remove-accents": "^0.4.2",
@@ -64,6 +65,5 @@
   },
   "directories": {
     "lib": "lib"
-  },
-  "agradecimento": "KillovSky, bot baseado na base IRIS"
+  }
 }

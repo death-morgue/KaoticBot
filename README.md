@@ -1,8 +1,7 @@
-<p align="center" ><img alt="Kaotic Bot" src="https://github.com/death-morgue/KaoticBot/blob/main/lib/media/img/kaotic.jpg?raw=true"></p>
+<p align="center" ><img alt="Kaotic Bot" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/kaotic.jpg"></p>
 <h1 align="center">Kaotic Bot (WhatsApp Bot)</h1>
 <p align="center">
   <img alt"GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/death-morgue/kaoticbot">
-  <img alt="Latest version" src="https://img.shields.io/github/v/release/death-morgue/kaoticbot.svg" alt="Latest version">
   
   <p align="center">
   Um WhatsApp bot destinado a diversão em grupo, fazendo figurinhas e ajudando a manter o pessoal ativo, brincadeiras por xp e outros...
@@ -61,6 +60,8 @@ Para a instalação de tudo acima no Linux, você pode usar o comando abaixo:
 > sudo apt install nodejs git ffmpeg -y
 ```
 Caso você tenha erros com a versão do node no repositório de seu Linux, use o [(Node Source)](https://github.com/nodesource/distributions), lembre-se de usar a LTS(14).
+
+<p align="center" ><img alt="Terminal" src="https://raw.githubusercontent.com/MicaelliMedeiros/micaellimedeiros/master/image/computer-illustration.png"></p>
 
 ### No ***TERMINAL***
 
