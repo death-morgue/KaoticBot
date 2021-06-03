@@ -67,6 +67,7 @@ Caso você tenha erros com a versão do node no repositório de seu Linux, use o
 
 ```
 $ git clone https://github.com/death-morgue/KaoticBot
+$ cd KaoticBot
 $ npm i git
 $ npm i npm 
 $ npm i @open-wa/wa-automate@3.15.2 --force
