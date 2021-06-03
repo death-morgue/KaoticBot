@@ -1,6 +1,6 @@
 const { criando, cliente, Client, STATE, create } =  require('@open-wa/wa-automate')
 const fs = require('fs-extra')
-const comandosBot = require('./config')
+const kconfig = require('./config')
 const opcoes = require('./lib/opcoes')
 const { cores, dormir } = require('./lib/funcoes')
 const config = require('./lib/config/Bot/config.json')
@@ -18,7 +18,7 @@ const maximoBackup = Math.floor(Math.random() * 6) + 1
 if (fs.existsSync('./logs/Chrome')) { fs.rmdirSync('./logs/Chrome', { recursive: true }) }
 
 // Cria um cliente para o começo do bot
-const iniciar = async (kaotic = new Client()) => {
+const start = async (kaotic = new Client()) => {
 
     // Verifica se tem atualização no github
     const getVersao = await axios.get('https://raw.githubusercontent.com/death-morgue/KaoticBot/main/package.json')
@@ -64,7 +64,7 @@ const iniciar = async (kaotic = new Client()) => {
                     cores('Todas as mensagens foram apagadas!', 'lime'))
             }
         })
-        await comandosBot(kaotic, message)
+        await kconfig(kaotic, message)
     })
 
     // Função para identificar caso seja adicionado em grupo
@@ -270,4 +270,4 @@ const iniciar = async (kaotic = new Client()) => {
 }
 
 // Inicia a sessão do Kaotic
-create(opcoes(iniciar)).then((kaotic) => start(kaotic)).catch((err) => console.error(err))
+create(opcoes(start)).then((kaotic) => start(kaotic)).catch((err) => console.error(err))

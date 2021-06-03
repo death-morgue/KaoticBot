@@ -3,6 +3,8 @@ node_modules
 Kaotic Bot.data.json
 package-lock.json
 logs
+cases.txt
+teste.txt
 
 # managed
 **.data.json
