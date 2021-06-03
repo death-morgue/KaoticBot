@@ -68,10 +68,10 @@ Caso você tenha erros com a versão do node no repositório de seu Linux, use o
 ```
 $ git clone https://github.com/death-morgue/KaoticBot
 $ npm i git
-$ npm i 
+$ npm i npm 
 $ npm i @open-wa/wa-automate@3.15.2 --force
-$ npm i npm
-$ npm update
+$ npm i 
+$ npm update && upgrade
 $ npm audit fix --force
 ```
 
@@ -89,6 +89,7 @@ $ npm audit fix --force
 
            
 * [Open-Wa](https://github.com/open-wa)
+* [Luix-Guxto](@luix-guxto)
 
 ### Muito obrigado a todos!
 
