@@ -21,14 +21,11 @@
 <h3><p align="center">Version: 1.0</p></h3>
 
 <h2 align="center">📆  Features</h2>
-***Todos os que estão marcados já se encontram presente no Kaotic Bot funcionando. Os que não estão, é porque ainda estão em desenvolvimento.
-
-
-
+* Todos os que estão marcados já se encontram presente no Kaotic Bot funcionando. 
+* Os que não estão, é porque ainda estão em desenvolvimento.
+<p></p>
 <p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/adeus.png"></p>
-
-
-
+<p></p>
 - [ ] Xp
 - [ ] Contador de mensagem
 - [ ] Funções de administrador
