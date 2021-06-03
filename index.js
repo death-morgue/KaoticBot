@@ -109,10 +109,152 @@ const iniciar = async (kaotic = new Client()) => {
 
     })
 
-    /**
-     * tem que criar as mensagens de boas vindas e criar bloqueio de travas e flood
-     * 
-    */
+    // Configurações de boas vindas
+    kaotic.onGlobalParticipantsChanged(async (event) =>{
+
+        //Leitura dos JSON
+        const bemVindo = JSON.parse(fs.readFileSync('./lib/config/Grupos/welcome.json'))
+        const anti = JSON.parse(fs.readFileSync('./lib/config/Bot/anti.json'))
+        const blackList =  JSON.parse(fs.readFileSync('/lib/config/Grupos/blacklist.json'))
+        const fake = JSON.parse(fs.readFileSync('/lib/config/Grupos/fake.json'))
+
+        //algumas informações
+        const pessoa = event.who //id de quem foi adicionado
+        const numeroBot = await kaotic.getHostNumber() + '@c.us' //id do bot
+        const eBot = pessoa.includes(numeroBot) //retorna boolean, comparando o numero de quem foi adicionado com o do bot
+        const ddi = config.ddi //define o ddi dos anti fake, caso queira adicionar mais ddi, não coloque na ddi da config, mais pra frente terá o local
+        const grupoTemBemVindo = bemVindo.includes(event.chat) //retorna boolean, verificando se a id do chat está no arquivo de bem vindo
+        const grupoTemAntiFake = fake.includes(event.chat)//boolean, verifica se op grupo está com anti fake ligado
+        const numeroFake = !pessoa.startsWith(ddi)// // boolean, verifica se começa com o ddi
+        const grupoTemBlackList = blackList.includes(event.chat)//boolean, verifica se a black list está ligada
+        const numeroBlackList = anti.includes(pessoa)
+
+        //informações de quem foi adicionado
+        const infoPessoa = await kaotic.getContact(pessoa)
+        let { pushname, verifiedName, formattedName } = infoPessoa
+        pushname = pushname || verifiedName || formattedName
+
+        //informações do grupo que foi adicionado
+        const infoGrupo = await kaotic.getChatById(event.chat)
+        let {contact, groupMetadata, name } = infoGrupo
+
+        try{
+            if(event.action == 'add') {
+
+                // Verifica se o numero está na lista negra e se o grupo não permite lista negra
+                if(grupoTemBlackList && numeroBlackList && !eBot){
+                    
+                    await kaotic.sendText(event.chat, meuIdioma().entrace())
+                    await dormir(2000)
+                    await kaotic.removeParticipant(event.chat, pessoa)
+                    await kaotic.contactBlock(pessoa) // Pra evitar que o bot seja travado
+                    console.log(
+                        cores('[ LISTA NEGRA ]', 'red'),
+                        cores(`${pushname} - (${event.who.replace('@c.us', '')}) foi banido do ${name} por estar na black list!!!`, 'gold')
+                    )
+
+                }
+
+                // verifica se o grupo tem antifake, e se a pessoa for fake, remove ela
+                else if(grupoTemAntiFake && !eBot && numeroFake && !pessoa.startsWith('351')){ //para permitir mais ddi's, basta colocar pessoa.startsWith('ddi desejado')
+
+                    await kaotic.sendText(event.chat, meuIdioma().nofake(event))
+                    await dormir(4000)// Anti-fake e Black-List não tem anti-flood por segurança, mexa com a var welcOn para inserir
+                    await kaotic.removeParticipant(event.chat, pessoa)
+                    await kaotic.contactBlock(pessoa) // Pra evitar que o bot seja travado                    
+                    console.log(
+                        cores('[ FAKE ]', 'red'),
+                        cores(`${event.who.replace('@c.us', '')}) foi banido do ${name} por usar número falso ou ser de fora do país!`, 'gold')
+                    )
+
+                }
+                else if(grupoTemBemVindo && !eBot && welcOn == 0 && !numeroBlackList){
+                    welcOn = 1
+
+                    //pega a foto de perfil
+                    var perfil = await kaotic.getProfilePicFromServer(pessoa)
+                    if(perfil == '' || perfil == undefined){
+                        perfil = './lib/midia/img/semfoto.png'
+                    }
+
+                    //cria a foto de boas vindas
+                    const boasVindas = await new canvas.Welcome()
+                        .setUsername(pushname)
+                        .setDiscriminator(event.who.substring(6, 10))
+                        .setMemberCount(groupMetadata.participants.length)
+                        .setGuildName(name)
+                        .setAvatar(perfil)
+                        .setText("title", `BEM VINDO`)
+                        .setText("message", `VOCÊ ESTÁ NO {server}`)
+                        .setText("member-count", `VOCÊ É O MEMBRO Nº {count}`)
+                        .setColor('border', '#00100C')
+                        .setColor('username-box', '#00100C')
+                        .setColor('discriminator-box', '#00100C')
+                        .setColor('message-box', '#00100C')
+                        .setColor('title', '#6577AF')
+                        .setOpacity("username-box", 0.6)
+                        .setOpacity("discriminator-box", 0.6)
+                        .setOpacity("message-box", 0.6)
+                        .setOpacity("border", 0.4)
+                        .setBackground('./lib/midia/img/fundobemvindo.png')
+                        .toAttachment()
+
+                    const base64 = `data:image/png;base64,${boasVindas.toBuffer().toString('base64')}`
+                
+                    //envia as boas vindas
+                    await kaotic.sendFile(event.chat, base64, 'boasVindas.png', meuIdioma.bemVindo(pushname, name))
+                    //await kaotic.sendPtt [envia audio]
+
+                    welcOn = 0
+					console.log(color('[ENTROU]', 'red'), color(`${pushname} - (${event.who.replace('@c.us', '')}) entrou no grupo ${name}.`, 'gold'))
+				
+                }
+            }
+
+            // verifica se um membro foi removido
+            if(event.action == 'remove' && !eBot && grupoTemBemVindo && abayo == 0 && !numeroBlackList){
+
+                abayo = 1
+                var perfil = await kaotic.getProfilePicFromServer(pessoa)
+                    if(perfil == '' || perfil == undefined){
+                        perfil = './lib/midia/img/semfoto.png'
+                    }
+                
+                //cria foto de despedidas
+                const tchau = await canvas.Goodbye()
+                .setUsername(pushname)
+                .setDiscriminator(event.who.substring(6, 10))
+                .setMemberCount(groupMetadata.participants.length)
+                .setGuildName(name)
+                .setAvatar(perfil)
+                .setText("title", `ADEUS`)
+				.setText("message", `SAIU DO {server}`)
+				.setText("member-count", `ELE FOI O MEMBRO N° {count}`)
+				.setColor('border', '#00100C')
+				.setColor('username-box', '#00100C')
+				.setColor('discriminator-box', '#00100C')
+				.setColor('message-box', '#00100C')
+				.setColor('title', '#6577AF')
+				.setOpacity("username-box", 0.6)
+				.setOpacity("discriminator-box", 0.6)
+				.setOpacity("message-box", 0.6)
+				.setOpacity("border", 0.4)
+                .setBackground('./lib/midia/img/adeus.png')
+                .toAttachment()
+
+                const base64 = `data:image/png;base64,${tchau.toBuffer().toString('base64')}`
+				await kill.sendFile(event.chat, base64, 'adeus.png', meuIdioma().tchau(pushname))
+                //await kaotic.sendPtt [envia audio]
+
+                abayo = 0
+				console.log(color('[SAIU/BAN]', 'red'), color(`${pushname} - (${event.who.replace('@c.us', '')}) saiu ou foi banido do grupo ${name}.`, 'gold'))
+
+            }
+        }catch(err){
+            console.log(err);welcOn = 0;abayo = 0
+        }
+
+    })
 
     //bloqueia os que liga
     kaotic.onIncomingCall(async (callData) =>{
