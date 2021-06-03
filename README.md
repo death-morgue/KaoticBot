@@ -25,8 +25,10 @@
 <p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/adeus.png"></p>
 Bot está em constante atualização fique ligado para novas features
 
+
 * Todos os que estão marcados já se encontram presente no Kaotic Bot funcionando. 
 * Os que não estão, é porque ainda estão em desenvolvimento.
+
 
 - [ ] Xp
 - [ ] Contador de mensagem
@@ -45,6 +47,7 @@ Bot está em constante atualização fique ligado para novas features
 - [ ] destrava
 - [x] Boas Vindas
 - [x] Adeus
+
 
 
 <h2 align="center">🖥 Install</h2>
