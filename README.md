@@ -51,7 +51,7 @@ Bot está em constante atualização fique ligado para novas features
 
 
 <h2 align="center">🖥 Install</h2>
-
+<p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/fundobemvindo.png"></p>
 Ainda está em desenvolvimento, por isso fique atento a atualizado no nosso git!
 
 Para executar o Kaotic, você precisara de ter o ***[(nodeJS)](https://nodejs.org/en/download/)*** atualizado, recomendo versão LTS e do ***[(GIT CMD)](https://git-scm.com/downloads)***
