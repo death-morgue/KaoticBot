@@ -21,8 +21,14 @@
 <h3><p align="center">Version: 1.0</p></h3>
 
 <h2 align="center">📆  Features</h2>
-Todos os que estão marcados já se encontram presente no Kaotic Bot funcionando. 
-Os que não estão, é porque ainda estão em desenvolvimento.
+
+<p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/adeus.png"></p>
+Bot está em constante atualização fique ligado para novas features
+
+
+* Todos os que estão marcados já se encontram presente no Kaotic Bot funcionando. 
+* Os que não estão, é porque ainda estão em desenvolvimento.
+
 
 - [ ] Xp
 - [ ] Contador de mensagem
@@ -35,14 +41,17 @@ Os que não estão, é porque ainda estão em desenvolvimento.
 - [ ] Consultas
 - [ ] Travas
 - [ ] anti travas
-- [ ] anti fakes
+- [x] anti fakes
 - [ ] anti link
 - [ ] nHentai
 - [ ] destrava
+- [x] Boas Vindas
+- [x] Adeus
+
 
 
 <h2 align="center">🖥 Install</h2>
-
+<p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/fundobemvindo.png"></p>
 Ainda está em desenvolvimento, por isso fique atento a atualizado no nosso git!
 
 Para executar o Kaotic, você precisara de ter o ***[(nodeJS)](https://nodejs.org/en/download/)*** atualizado, recomendo versão LTS e do ***[(GIT CMD)](https://git-scm.com/downloads)***
