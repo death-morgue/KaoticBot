@@ -89,7 +89,7 @@ $ npm audit fix --force
 
            
 * [Open-Wa](https://github.com/open-wa)
-* [Luix-Guxto](@luix-guxto)
+* [Luix-Guxto](https://github.com/luix-guxto)
 
 ### Muito obrigado a todos!
 
