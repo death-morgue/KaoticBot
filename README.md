@@ -24,6 +24,8 @@
 Todos os que estão marcados já se encontram presente no Kaotic Bot funcionando. 
 Os que não estão, é porque ainda estão em desenvolvimento.
 
+<p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/adeus.png"></p>
+
 - [ ] Xp
 - [ ] Contador de mensagem
 - [ ] Funções de administrador
@@ -35,10 +37,12 @@ Os que não estão, é porque ainda estão em desenvolvimento.
 - [ ] Consultas
 - [ ] Travas
 - [ ] anti travas
-- [ ] anti fakes
+- [x] anti fakes
 - [ ] anti link
 - [ ] nHentai
 - [ ] destrava
+- [x] Boas Vindas
+- [x] Adeus
 
 
 <h2 align="center">🖥 Install</h2>
