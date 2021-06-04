@@ -88,7 +88,8 @@ $ npm i git
 $ npm i npm 
 $ npm i @open-wa/wa-automate@3.15.2 --force
 $ npm i 
-$ npm update &&  npm upgrade
+$ npm update --force
+$ npm upgrade --force
 $ npm audit fix --force
 ```
 
