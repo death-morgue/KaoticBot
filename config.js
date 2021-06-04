@@ -222,20 +222,29 @@ module.exports = kconfig = async (kaotic, message) => {
 
 
         // Sistema do XP
-        if (isGroupMsg /*&& isxp*/ && !isWin(user) && !isBlocked) {
+        if (isGroupMsg && isxp && !isWin(user) && !isBlocked) {
             try {
                 await wait(user)
-                const levelAtual = await getLevel(user, nivel)
+                var levelAtual = await getLevel(user, nivel)
+				const levelInicial = await getLevel(user, nivel)
                 const xpAtual = Math.floor(Math.random() * 20) + 11 // XP de 10 a 30
                 const neededXp = 5 * Math.pow(levelAtual, 2) + 50 * levelAtual + 100
 				await dormir(2000)
                 await addXp(user, xpAtual, nivel)
                 if (neededXp <= getXp(user, nivel)) {
-                    await addLevel(user, 1, nivel)
+					var nivelReq = neededXp
+					while(nivelReq <= getXp(user, nivel)){
+
+                    	await addLevel(user, 1, nivel)
+						levelAtual = await getLevel(user, nivel)
+						nivelReq = await 5 * Math.pow(levelAtual, 2) + 50 * levelAtual + 100
+
+					}
+					
 					// Ative isso para fazer a Kaotic mandar mensagem de level UP
-					//const userLevel = await getLevel(user, nivel)
-                    //const takeXp = 5 * Math.pow(userLevel, 2) + 50 * userLevel + 100
-                    //await kaotic.reply(from, `*「 +1 NIVEL 」*\n\n➸ *Nome*: ${pushname}\n➸ *XP*: ${await getXp(user, nivel)} / ${takeXp}\n➸ *Level*: ${levelAtual} -> ${await getLevel(user, nivel)} 🆙 \n➸ *Patente*: *${patente}* 🎉`, id)
+					const userLevel = await getLevel(user, nivel)
+                    const takeXp = 5 * Math.pow(userLevel, 2) + 50 * userLevel + 100
+                    await kaotic.reply(from, `*[+1 NIVEL]*\n\n↳ *Nome*: ${pushname}\n↳ *XP*: ${await getXp(user, nivel)} / ${takeXp}\n↳ *Level*: ${levelInicial} ➸ ${await getLevel(user, nivel)} 🆙 \n↳ *Patente*: *${patente}* 🎉`, id)
                 }
             } catch (err) { console.log(cores('[XP]', 'crimson'), err) }
         }
@@ -554,15 +563,20 @@ module.exports = kconfig = async (kaotic, message) => {
 			switch(command){
 				case 'grupo':
 					
-					return await kaotic.sendText(from, `comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`)
+					return await kaotic.reply(from, `comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`, id)
 
+				break
+
+				case 'rank':
+
+				return await kaotic.reply(from, `comando feito para ligar as funções de xp e jogos no grupo,\n\npara ativar digite ${prefix}rank on\npara desativar digite ${prefix}rank off`, id)
 				break
 
 				/*
 					// para criar um --help, coloque no seguinte formato
 					case 'comando':
 
-						return await kaotic.sendText(from, `sua explicação do comando`)
+						return await kaotic.reply(from, `sua explicação do comando`)
 
 					break
 				*/
@@ -578,9 +592,9 @@ module.exports = kconfig = async (kaotic, message) => {
         switch(command) {
 			
         case 'grupo': //abre e fecha o grupo
-			if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(sender.name), id)
-			if(!botAdm) return await kaotic.sendTextWithMentions(from, mess.botAdm(chat.groupMetadata.name, chat.groupMetadata.owner.replace('@c.us', '')), id)
-			if(!eAdm) return await kaotic.reply(from, mess.soAdm(sender.name), sender.id)
+			if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
+			if(!botAdm) return await kaotic.sendTextWithMentions(from, mess.botAdm(name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+			if(!eAdm) return await kaotic.reply(from, mess.soAdm(pushname), id)
 			if(args.length<=0) return await kaotic.reply(from, `Esse comando tem opções, caso tenha duvidas digite ${prefix}grupo --help`, id)
 				if(args[0] == 'on'){
 					await kaotic.setGroupToAdminsOnly(from, true)
@@ -590,9 +604,47 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.setGroupToAdminsOnly(from, false)
 					await kaotic.sendText(from, `Podem falar membros comuns, os ademiros tem dó de vocês`)
 				}else{
-					kaotic.reply(from, `não entendi,\n\non: fechar\noff: abrir\n\ncasso tenha duvidas digite ${prefix}grupo --help`, id)
+					kaotic.reply(from, mess.onOff(pushname, 'grupo'), id)
 				}
 		break
+
+		case 'rank': //liga e desliga o rank nos grupos
+            if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
+			if(!eAdm || !eDono) return await kaotic.reply(from, mess.soAdm, id)
+				const idGrupo = groupId
+				// Liga a função xp
+				if (args[0] == 'on') {
+
+					//verifica se já está no arquivo
+					if (xp.includes(idGrupo)) return await kaotic.reply(from, mess.jaHabilitado(), id)
+					
+					//puxa a id do grupo e coloca na xp.json
+					xp.push(idGrupo)
+					await fs.writeFileSync('./lib/config/Grupos/xp.json', JSON.stringify(xp))
+
+					//informa que foi habilitado
+					await kaotic.reply(from, mess.ligado('Rank'), id)
+
+				} else if (args[0] == 'off') {
+
+					//verifica se está ligado
+					if (!xp.includes(idGrupo)) return await kaotic.reply(from, mess.jaDesligado(pushname), id)
+					
+					//puxa a id e remove do xp.json
+					while(xp.includes(idGrupo)){
+
+						//enquanto tiver no xp.json ele vai remover
+						xp.splice(idGrupo, 1)
+						await fs.writeFileSync('./lib/config/Grupos/xp.json', JSON.stringify(xp))
+
+					}
+
+					//informa que foi desativado
+					await kaotic.reply(from, mess.desligado('Rank'), id)
+
+				} 
+				else return await kaotic.reply(from, mess.onOff(pushname, 'rank'), id)
+            break
 
 
 			default:

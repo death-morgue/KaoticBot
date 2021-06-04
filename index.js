@@ -5,26 +5,26 @@ const opcoes = require('./lib/opcoes')
 const { cores, dormir } = require('./lib/funcoes')
 const config = require('./lib/config/Bot/config.json')
 const canvas = require('discord-canvas')
-const { mylang } = require('./lib/lingua')
+const { meuIdioma } = require('./lib/lingua')
 const axios = require('axios')
 const kaoticvs = require('./package.json')
 var welcOn = 0;var abayo = 0
 
-// max de backups
-const maxBackups = Math.floor(Math.random() * 5) + 1
+	// max de backups
+	const maxBackups = Math.floor(Math.random() * 5) + 1
 
-// Apaga o cache do Chrome
-if (fs.existsSync('./logs/Chrome')) { fs.rmdirSync('./logs/Chrome', { recursive: true }) }
+	// Apaga o cache do Chrome
+	if (fs.existsSync('./logs/Chrome')) { fs.rmdirSync('./logs/Chrome', { recursive: true }) }
 
-// inicialização do BOT
-const start = async (kaotic = new Client()) => {
+	// inicialização do BOT
+	const start = async (kaotic = new Client()) => {
 
 	//verifica a versão
-const getversion = await axios.get('https://raw.githubusercontent.com/death-morgue/KaoticBot/main/package.json')
-if (kaoticvs.version !== getversion.data.version) { console.log(cores('\n[ UPDATE ]', 'crimson'), cores(`Uma nova versão do KaoticBot foi lançada [${getversion.data.version}], atualize para obter melhorias e correções! → ${kaoticvs.homepage}`, 'gold')) }
+	const getversion = await axios.get('https://raw.githubusercontent.com/death-morgue/KaoticBot/main/package.json')
+	if (kaoticvs.version !== getversion.data.version) { console.log(cores('\n[ UPDATE ]', 'crimson'), cores(`Uma nova versão do KaoticBot foi lançada [${getversion.data.version}], atualize para obter melhorias e correções! → ${kaoticvs.homepage}`, 'gold')) }
 	
-//inicia o bot
-console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 98873-7769 | ${kaoticvs.bugs.url}\n`, 'lime'), cores(`\n[ KAOTIC BOT ${kaoticvs.version} ]`, 'magenta'), cores('Estamos prontos para começar mestre!\n', 'lime'))
+	//inicia o bot
+	console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 98873-7769 | ${kaoticvs.bugs.url}\n`, 'lime'), cores(`\n[ KAOTIC BOT ${kaoticvs.version} ]`, 'magenta'), cores('Estamos prontos para começar mestre!\n', 'lime'))
 	
 	// Backup do Level e do contator de msg toda vez que bot
 	const levelBk = JSON.parse(fs.readFileSync('./lib/config/Bot/level.json'))
@@ -61,25 +61,33 @@ console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 
 
 		//verifica de o dono está no grupos
 		if (chat.groupMetadata.participants.includes(config.owner)) {
-			await kaotic.sendText(chat.id, mylang().novogrupo())
+			await kaotic.sendText(chat.id, meuIdioma().novogrupo())
 			return console.log(cores('[NOVO]', 'red'), cores(`Fui adicionado ao grupo ${chat.contact.name} e eles tem ${totalMem} membros.`, 'yellow'))
 		} 
 		// verifica se o total de membros do grupo é maior que o minimo
 		else if (totalMem < config.memberReq) {
-			await kaotic.sendText(chat.id, mylang().noreq(totalMem))
+			await kaotic.sendText(chat.id, meuIdioma().noreq(totalMem))
 			await kaotic.deleteChat(chat.id)
 			await kaotic.leaveGroup(chat.id)
+			return console.log(
+				cores('[ GRUPO ]', 'red'),
+				cores(`sai do grupo ${chat.contact.name}, pois estamos em capacidade maxima!`, 'gold')
+			)
 		} 
 		
 		//verifica se o maximo de grupos foi atingido
 		else if (lmtgru.length > config.gpLimit) {
-			await kaotic.sendText(chat.id, mylang().cheio(lmtgru))
+			await kaotic.sendText(chat.id, meuIdioma().cheio(lmtgru))
 			await kaotic.deleteChat(chat.id)
 			await kaotic.leaveGroup(chat.id)
+			return console.log(
+				cores('[ GRUPO ]', 'red'),
+				cores(`sai do grupo ${chat.contact.name}, pois ele tem poucos membros!`, 'gold')
+			)
 		} 
 		
 		// Informa que foi adicionado
-		else { kaotic.sendText(chat.id, mylang().novogrupo()) }
+		else { kaotic.sendText(chat.id, meuIdioma().novogrupo()) }
 		return console.log(cores('[NOVO]', 'red'), cores(`Fui adicionado ao grupo ${chat.contact.name} e eles tem ${totalMem} membros.`, 'yellow'))
 	})
 
@@ -116,7 +124,7 @@ console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 
 
 				//se no grupo tiver ligado o bklist e o numero estiver na blacklist
 				if (isAnti && fuck && !isMyBot) {
-					await kaotic.sendText(event.chat, mylang().entrace())
+					await kaotic.sendText(event.chat, meuIdioma().entrace())
 					await dormir(2000)
 					await kaotic.removeParticipant(event.chat, event.who)
 					await kaotic.contactBlock(event.who) // Evita ser travado por putinhos
@@ -125,7 +133,7 @@ console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 
 				
 				//se o numero for fake e o grupo tiver antifake ligado
 				else if (isFake && !fake && !isMyBot) {
-					await kaotic.sendTextWithMentions(event.chat, mylang().nofake(event))
+					await kaotic.sendTextWithMentions(event.chat, meuIdioma().nofake(event))
 					await dormir(4000) // Anti-fake e Black-List não tem anti-flood por segurança, mexa com a var welcOn para inserir
 					await kaotic.removeParticipant(event.chat, event.who)
 					await kaotic.contactBlock(event.who) // Evita ser travado por putinhos
@@ -161,7 +169,7 @@ console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 
 					const base64 = `data:image/png;base64,${welcomer.toBuffer().toString('base64')}`
 					
 					// envia a foto
-					await kaotic.sendFile(event.chat, base64, 'welcome.png', mylang().welcome(pushname, name))
+					await kaotic.sendFile(event.chat, base64, 'welcome.png', meuIdioma().welcome(pushname, name))
 					welcOn = 0
 					console.log(cores('[ENTROU]', 'red'), cores(`${pushname} - (${event.who.replace('@c.us', '')}) entrou no grupo ${name}!`, 'yellow'))
 				}
@@ -189,7 +197,7 @@ console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 
 				.setBackground('./lib/midia/img/adeus.png')
 				.toAttachment()
 				const base64 = `data:image/png;base64,${bye.toBuffer().toString('base64')}`
-				await kaotic.sendFile(event.chat, base64, 'welcome.png', mylang().bye(pushname))
+				await kaotic.sendFile(event.chat, base64, 'welcome.png', meuIdioma().bye(pushname))
 				await kaotic.sendPtt(event.chat, `./lib/media/audio/bye.mp3`)
 				abayo = 0
 				console.log(cores('[SAIU/BAN]', 'red'), cores(`${pushname} - (${event.who.replace('@c.us', '')}) saiu ou foi banido do grupo ${name}!`, 'yellow'))
@@ -199,7 +207,7 @@ console.log(cores('\n[ SUPORTE ]', 'magenta'), cores(`55 31 99994-9012 | +55 75 
 
 	// Bloqueia quem liga
 	kaotic.onIncomingCall(async (callData) => {
-		await kaotic.sendText(callData.peerJid, mylang().blockcalls())
+		await kaotic.sendText(callData.peerJid, meuIdioma().blockcalls())
 		await kaotic.contactBlock(callData.peerJid)
 		console.log(cores('[CALL]', 'red'), cores(`${callData.peerJid.replace('@c.us', '')} foi bloqueado por me ligar!`, 'yellow'))
 	})
