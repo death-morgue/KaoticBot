@@ -48,9 +48,11 @@ const options = { headless: true, userDataDir: "./logs/Chrome/Maker", args: ['--
 
 // ATIVADORES & CONFIGS EXTRAS
 const region = config.lang
-//const aki = new Aki(region)
-//const akinit = async () => { try { await aki.start() } catch (error) { console.log(cores('[AKI]', 'crimson'), cores(`→ Obtive erros ao iniciar o akinator → ${error.message}.`, 'gold')) } }
-//akinit()
+
+//está dando erro no akinator, vou ver o que é
+/*const aki = new Aki(region)
+const akinit = async () => { try { await aki.start() } catch (error) { console.log(cores('[AKI]', 'crimson'), cores(`→ Obtive erros ao iniciar o akinator → ${error.message}.`, 'gold')) } }
+akinit()*/
 const cd = Number(config.timePlay * 60000) // * 60000 - Transforma o valor do tempo de aposta em minutos
 const mess = meuIdioma()
 moment.tz.setDefault('America/Sao_Paulo').locale('pt_BR')
@@ -107,10 +109,10 @@ module.exports = kconfig = async (kaotic, message) => {
         const groupAdmins = isGroupMsg ? await kaotic.getGroupAdmins(groupId) : ''
 
 		//booleans para usar de condicional em comando
-        const isGroupAdmins = isGroupMsg ? groupAdmins.includes(user) : false
-        const isBotGroupAdmins = isGroupMsg ? groupAdmins.includes(botNumber + '@c.us') : false
+        const eAdm = isGroupMsg ? groupAdmins.includes(user) : false
+        const botAdm = isGroupMsg ? groupAdmins.includes(botNumber + '@c.us') : false
         const isNsfw = isGroupMsg ? nsfw_.includes(groupId) : false
-		const isOwner = ownerNumber.includes(user)
+		const eDono = ownerNumber.includes(user)
         const autoSticker = isGroupMsg ? atstk.includes(groupId) : false
 
 		//tempo
@@ -186,7 +188,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		// Sobe patente por nível, se desejar edite as patentes em 'lib/config/Bot/patentes.json'
         const check = await getLevel(user, nivel)
 		var patente = patents.a0
-		if(isOwner){ patente = patents.a31 } 
+		if(eDono){ patente = patents.a31 } 
 		else if (check <= 4) { patente = patents.a1 } 
 		else if (check <= 10) { patente = patents.a2 } 
 		else if (check <= 15) { patente = patents.a3 } 
@@ -240,13 +242,13 @@ module.exports = kconfig = async (kaotic, message) => {
 		
 		// Anti Imagens pornográficas
 		if (isGroupMsg && 
-			!isGroupAdmins && 
-			isBotGroupAdmins && 
+			!eAdm && 
+			botAdm && 
 			isAntiPorn && 
 			isMedia && 
 			isImage && 
 			!isCmd && 
-			!isOwner && 
+			!eDono && 
 			oneImage == 0) {
 			try {
 				oneImage = 1; console.log(
@@ -298,10 +300,10 @@ module.exports = kconfig = async (kaotic, message) => {
 
         // Anti links de grupo
 		if (isGroupMsg && 
-			!isGroupAdmins && 
-			isBotGroupAdmins && 
+			!eAdm && 
+			botAdm && 
 			isAntiLink && 
-			!isOwner && 
+			!eDono && 
 			oneLink == 0) {
 			try {
 				if (chats.match(new RegExp(/(https:\/\/chat.whatsapp.com)/gi))) {
@@ -325,9 +327,9 @@ module.exports = kconfig = async (kaotic, message) => {
 		if (isGroupMsg && 
 			isAntiTravas &&
 			isTrava && 
-			!isGroupAdmins && 
-			isBotGroupAdmins && 
-			!isOwner && 
+			!eAdm && 
+			botAdm && 
+			!eDono && 
 			oneTrava == 0) {
 			try {
 
@@ -357,7 +359,7 @@ module.exports = kconfig = async (kaotic, message) => {
 				await kaotic.sendTextWithMentions(from, mess.baninjusto(user) + 'Travas.').then(async () => { 
 					await kaotic.sendText(from, mess.nopanic(), id) }) // Manda o motivo do ban e explica para os membros
 					
-				await kaotic.sendText('557588690774-1621550879@g.us', ownerNumber[0], mess.recTrava(user) + `\nAt/No > ${name}`).then(async () => {
+				await kaotic.sendText(ownerNumber[0], mess.recTrava(user) + `\nNo > ${name}`).then(async () => {
 					await kaotic.contactBlock(user) }) // Avisa o dono do bot e bloqueia o cara
 
 				await kaotic.setGroupToAdminsOnly(groupId, false);return oneTrava = 0 // Reabre o grupo
@@ -366,14 +368,14 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
 		
 		// Bloqueia travas no PV
-		if (!isGroupMsg && !isOwner && isTrava) { 
+		if (!isGroupMsg && !eDono && isTrava) { 
 			await kaotic.contactBlock(user).then(async () => { 
 				await kaotic.sendText(ownerNumber[0], mess.recTrava(user)) 
 			}) }
 		// Para limpar automaticamente sem você verificar, adicione "await kaotic.clearChat(chatId)", o mesmo no de grupos.
 
         // Anti links pornográficos
-        if (isGroupMsg && !isGroupAdmins && isBotGroupAdmins && isAntiPorn && !isOwner && oneLink == 0) {
+        if (isGroupMsg && !eAdm && botAdm && isAntiPorn && !eDono && oneLink == 0) {
 			try {
 				if (eLink(chats)) {
 					oneLink = 1; const inilkn = new URL(chats)
@@ -396,7 +398,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
 		
 		// Impede travas ou textos que tenham mais de 5.000 linhas
-		if (isGroupMsg && !isGroupAdmins && isBotGroupAdmins && !isOwner && oneTrava == 0) {
+		if (isGroupMsg && !eAdm && botAdm && !eDono && oneTrava == 0) {
 			try {
 				if (chats.length > 5000) {
 
@@ -416,7 +418,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
 		
 		// Bloqueia travas no PV que tenham mais de 5.000 linhas
-		if (!isGroupMsg && !isOwner) {
+		if (!isGroupMsg && !eDono) {
 			try {
 				if (chats.length > 5000) {
 					console.log(cores('[TRAVA]', 'red'), 
@@ -429,7 +431,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
 		
 		// Ative para banir quem mandar todos os tipos de links (Ative removendo a /* e */)
-		/*if (isGroupMsg && !isGroupAdmins && isBotGroupAdmins && isAntiLink && !isOwner && eLink(chats)) { 
+		/*if (isGroupMsg && !eAdm && botAdm && isAntiLink && !eDono && eLink(chats)) { 
 			await kaotic.removeParticipant(groupId, user) 
 		}*/
 		
@@ -452,31 +454,31 @@ module.exports = kconfig = async (kaotic, message) => {
 		}*/
 		
 		// Impede comandos em PV'S mutados
-		if (!isGroupMsg && isCmd && pvmte && !isOwner ) {
+		if (!isGroupMsg && isCmd && pvmte && !eDono ) {
 		return console.log(cores('> [SILENCE]', 'red'), 
 		cores(`Ignorando comando de ${pushname} - [${user.replace('@c.us', '')}] pois ele está mutado...`, 'gold'))
 		}
 
 		// Impede comandos em grupos mutados
-		if (isGroupMsg && isCmd && !isGroupAdmins && mute && !isOwner) {
+		if (isGroupMsg && isCmd && !eAdm && mute && !eDono) {
 		return console.log(cores('> [SILENCE]', 'red'), 
 		cores(`Ignorando comando de ${name} pois ele está mutado...`, 'gold'))
 		}
 
 		// Muta geral, reseta ao reiniciar
-		if (isCmd && !isOwner && isMuteAll == 1) {
+		if (isCmd && !eDono && isMuteAll == 1) {
 		return console.log(cores('> [SILENCE]', 'red'), 
 		cores(`Ignorando comando de ${pushname} pois os PV'S e Grupos estão mutados...`, 'gold'))
 		}
 
 		// Ignora pessoas bloqueadas
-		if (isBlocked && isCmd && !isOwner){
+		if (isBlocked && isCmd && !eDono){
 		return console.log(cores('> [BLOCK]', 'red'), 
 		cores(`Ignorando comando de ${pushname} - [${user.replace('@c.us', '')}] por ele estar bloqueado...`, 'gold'))
 		}
 
         // Anti Flood para PV'S
-        if (isCmd && muitoUsado(from) && !isGroupMsg && !isOwner) { 
+        if (isCmd && muitoUsado(from) && !isGroupMsg && !eDono) { 
 			await addXp(user, -100, nivel); 
 			return console.log(cores('> [FLOOD AS]', 'red'), 
 			cores(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'gold'), 
@@ -577,8 +579,8 @@ module.exports = kconfig = async (kaotic, message) => {
 			
         case 'grupo': //abre e fecha o grupo
 			if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(sender.name), id)
-			if(!isBotGroupAdmins) return await kaotic.sendTextWithMentions(from, mess.botAdm(chat.groupMetadata.name, chat.groupMetadata.owner.replace('@c.us', '')), id)
-			if(!isGroupAdmins) return await kaotic.reply(from, mess.soAdm(sender.name), sender.id)
+			if(!botAdm) return await kaotic.sendTextWithMentions(from, mess.botAdm(chat.groupMetadata.name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+			if(!eAdm) return await kaotic.reply(from, mess.soAdm(sender.name), sender.id)
 			if(args.length<=0) return await kaotic.reply(from, `Esse comando tem opções, caso tenha duvidas digite ${prefix}grupo --help`, id)
 				if(args[0] == 'on'){
 					await kaotic.setGroupToAdminsOnly(from, true)
