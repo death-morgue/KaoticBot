@@ -553,11 +553,20 @@ module.exports = kconfig = async (kaotic, message) => {
 		){
 			
 			switch(command){
-				case 'teste':
+				case 'grupo':
 					
-					return await kaotic.sendText(from, `testando o --help`)
+					return await kaotic.sendText(from, `comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`)
 
 				break
+
+				/*
+					// para criar um --help, coloque no seguinte formato
+					case 'comando':
+
+						return await kaotic.sendText(from, `sua explicação do comando`)
+
+					break
+				*/
 
 				default:
 					
@@ -569,10 +578,28 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
         switch(command) {
 			
-        case 'teste':
-			kaotic.sendText(from, 'teste')
+        case 'grupo': //abre e fecha o grupo
+			if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(sender.name), id)
+			if(!isBotGroupAdmins) return await kaotic.sendTextWithMentions(from, mess.botAdm(chat.groupMetadata.name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+			if(!isGroupAdmins) return await kaotic.reply(from, mess.soAdm(sender.name), sender.id)
+			if(args.length<=0) return await kaotic.reply(from, `Esse comando tem opções, caso tenha duvidas digite ${prefix}grupo --help`, id)
+				if(args[0] == 'on'){
+					await kaotic.setGroupToAdminsOnly(from, true)
+					await kaotic.sendText(from, `Os Ademiros dominam`)
+				}
+				else if(args[0] == 'off'){
+					await kaotic.setGroupToAdminsOnly(from, false)
+					await kaotic.sendText(from, `Podem falar membros comuns, os ademiros tem dó de vocês`)
+				}else{
+					kaotic.reply(from, `não entendi,\n\non: fechar\noff: abrir\n\ncasso tenha duvidas digite ${prefix}grupo --help`, id)
+				}
 		break
+
+
 			default:
+
+				return await kaotic.sendText(from, `Comando não existe`)
+
 				break
         }
 		

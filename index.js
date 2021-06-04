@@ -115,7 +115,7 @@ const start = async (kaotic = new Client()) => {
         //Leitura dos JSON
         const bemVindo = JSON.parse(fs.readFileSync('./lib/config/Grupos/welcome.json'))
         const anti = JSON.parse(fs.readFileSync('./lib/config/Bot/anti.json'))
-        const blackList =  JSON.parse(fs.readFileSync('/lib/config/Grupos/blacklist.json'))
+        const blackList =  JSON.parse(fs.readFileSync('./lib/config/Grupos/blacklist.json'))
         const fake = JSON.parse(fs.readFileSync('/lib/config/Grupos/fake.json'))
 
         //algumas informações
