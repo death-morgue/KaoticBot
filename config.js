@@ -563,13 +563,21 @@ module.exports = kconfig = async (kaotic, message) => {
 			switch(command){
 				case 'grupo':
 					
-					return await kaotic.reply(from, `comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`, id)
+					return await kaotic.reply(from, `Comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`, id)
 
 				break
 
 				case 'rank':
 
-				return await kaotic.reply(from, `comando feito para ligar as funções de xp e jogos no grupo,\n\npara ativar digite ${prefix}rank on\npara desativar digite ${prefix}rank off`, id)
+				return await kaotic.reply(from, `Comando feito para ligar as funções de xp e jogos no grupo,\n\npara ativar digite ${prefix}rank on\npara desativar digite ${prefix}rank off`, id)
+				break
+
+				case 'boasvindas':
+				case 'welcome':
+				case 'saudacoes':
+
+					return await kaotic.reply(from, `Comando feito para ligar e desligar as saudações no grupo,\n\npara ligar difite ${prefix}welcome on\npara desativar digite ${prefix}welcome off`)
+
 				break
 
 				/*
@@ -646,10 +654,57 @@ module.exports = kconfig = async (kaotic, message) => {
 				else return await kaotic.reply(from, mess.onOff(pushname, 'rank'), id)
             break
 
+			//liga e desliga as saudações
+			case 'boasvindas':
+			case 'welcome':
+			case 'saudacoes':
+
+			if (!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
+			if (!eAdm || !eDono) return await kaotic.reply(from, mess.soAdm(pushname), id)
+			
+				//ativa
+				if (args[0] == 'on') {
+
+					//verifica se já está ativo
+					if (welkom.includes(groupId)) return await kaotic.reply(from, mess.jaHabilitado(pushname), id)
+					
+					//escreve no JSON
+					welkom.push(groupId)
+					await fs.writeFileSync('./lib/config/Grupos/welcome.json', JSON.stringify(welkom))
+
+					//informa que ativou 
+					await kaotic.reply(from, mess.ligado('welcome'), id)
+
+				} 
+				
+				//desativa
+				else if (args[0] == 'off') {
+
+					//verifica se está ativo
+					if (!welkom.includes(groupId)) return await kaotic.reply(from, mess.jaDesligado(pushname), id)
+					
+					//remove no JSON
+					welkom.splice(groupId, 1)
+					await fs.writeFileSync('./lib/config/Grupos/welcome.json', JSON.stringify(welkom))
+					
+					//avisa a exclusão
+					await kaotic.reply(from, mess.desligado('welcome'), id)
+
+				}
+
+				// caso não sigam as instruções
+				else{
+
+					return await kaotic.reply(from, mess.onOff(pushname), id)
+
+				}
+			
+            break
+
 
 			default:
 
-				return await kaotic.sendText(from, `Comando não existe`)
+				return await kaotic.reply(from, `Comando não existe`, id)
 
 				break
         }

@@ -49,7 +49,7 @@ Bot está em constante atualização fique ligado para novas features
 - [x] Adeus
 
 
-<h2 align="center">🖥 Requisitos</h2>
+<h2 align="center">👁️‍🗨️ Requisitos</h2>
 
 Algumas coisas são de extrema importancia e devem ser notadas para rodar o KaoticBot
 
