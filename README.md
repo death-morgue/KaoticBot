@@ -77,7 +77,7 @@ Para a instalação de tudo acima no Linux, você pode usar o comando abaixo:
 ```
 Caso você tenha erros com a versão do node no repositório de seu Linux, use o [(Node Source)](https://github.com/nodesource/distributions), lembre-se de usar a LTS(14).
 
-<p align="center" ><img alt="Terminal" src="https://raw.githubusercontent.com/MicaelliMedeiros/micaellimedeiros/master/image/computer-illustration.png"></p>
+<p align="center" ><img alt="Terminal" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/terminal.gif"></p>
 
 ### No ***TERMINAL***
 
@@ -88,8 +88,7 @@ $ npm i git
 $ npm i npm 
 $ npm i @open-wa/wa-automate@3.15.2 --force
 $ npm i 
-$ npm update --force
-$ npm upgrade --force
+$ npm update &&  npm upgrade
 $ npm audit fix --force
 ```
 
