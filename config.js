@@ -577,7 +577,7 @@ module.exports = kconfig = async (kaotic, message) => {
 			
         case 'grupo': //abre e fecha o grupo
 			if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(sender.name), id)
-			if(!isBotGroupAdmins) return await kaotic.sendTextWithMentions(from, mess.botAdm(chat.groupMetadata.name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+			if(!isBotGroupAdmins) return await kaotic.sendTextWithMentions(from, mess.botAdm(name, chat.groupMetadata.owner.replace('@c.us', '')), id)
 			if(!isGroupAdmins) return await kaotic.reply(from, mess.soAdm(sender.name), sender.id)
 			if(args.length<=0) return await kaotic.reply(from, `Esse comando tem opções, caso tenha duvidas digite ${prefix}grupo --help`, id)
 				if(args[0] == 'on'){
