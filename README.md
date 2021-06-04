@@ -117,4 +117,4 @@ git clone https://github.com/death-morgue/KaoticBot && cd KaoticBot && npm i git
 ### Muito obrigado a todos!
 
 <h2 align="center">👋 Adeus</h2>
-<p align="center" ><gif alt="Adeus" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/feedback.gif"></p>
+<p align="center" ><img alt="Adeus" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/feedback.gif"></p>
