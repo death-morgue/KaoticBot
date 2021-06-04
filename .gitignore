@@ -5,6 +5,7 @@ package-lock.json
 logs
 cases.txt
 teste.txt
+lib/config/Grupos
 
 # managed
 **.data.json

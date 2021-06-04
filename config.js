@@ -220,10 +220,7 @@ module.exports = kconfig = async (kaotic, message) => {
 
 
         // Sistema do XP
-        if (isGroupMsg && 
-			isxp && 
-			!isWin(user) && 
-			!isBlocked) {
+        if (isGroupMsg /*&& isxp*/ && !isWin(user) && !isBlocked) {
             try {
                 await wait(user)
                 const levelAtual = await getLevel(user, nivel)
@@ -488,7 +485,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
 		
 		// Anti Flood para grupos
-        if (isCmd && muitoUsado(from) && isGroupMsg && !isOwner) { 
+        if (isCmd && muitoUsado(from) && isGroupMsg) { 
 			await addXp(user, -100, nivel); 
 			return console.log(cores('> [FLOOD AS]', 'red'), 
 			cores(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'gold'), 
@@ -602,7 +599,7 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				break
         }
-		
+
     } catch (err) {
         console.log(cores('[FALHA GERAL]', 'red'), err)
     }
