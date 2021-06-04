@@ -34,7 +34,7 @@ const youtubedl = require('youtube-dl-exec')
 const sharp = require('sharp')
 
 
-// Util
+// Utilidades
 const { cores, dormir, eLink, upload, muitoUsado, addFilter, traduzir, numInt } = require('./lib/funcoes')
 const { getLevel, getMsg, getXp, addLevel, addXp, getRank, isWin, wait, addLimit, addMsg, getLimit, getRole } = require('./lib/gaming')
 const poll = require('./lib/poll')
