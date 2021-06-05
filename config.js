@@ -698,10 +698,66 @@ module.exports = kconfig = async (kaotic, message) => {
 					return await kaotic.reply(from, mess.onOff(pushname), id)
 
 				}
-			
+			 
             break
 
+			case 'menu':;case ''://menu primario
+				const theMsg = await getMsg(user, msgcount)
+				const uzrXp = await getXp(user, nivel)
+				const uzrlvl = await getLevel(user, nivel)
+				const uneedxp = 5 * Math.pow(uzrlvl, 2) + 50 * uzrlvl + 100
+				const mping = processTime(t, moment())
+				await kaotic.sendText(from, mess.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
+				break
 
+				case 'menu2'://menu secundario
+					const theMsg1 = await getMsg(user, msgcount)
+					const uzrXp1 = await getXp(user, nivel)
+					const uzrlvl1 = await getLevel(user, nivel)
+					const uneedxp1 = 5 * Math.pow(uzrlvl1, 2) + 50 * uzrlvl1 + 100
+					const mping1 = processTime(t, moment())
+					await kaotic.sendText(from, mess.menu2(pushname, time, theMsg1, uzrXp1, uneedxp1, uzrlvl1, mping1, patente))
+					break
+
+				case 'comandos':;case 'comando'://todos os comandos
+					await kaotic.sendText(from, mess.comandos())
+				break
+				
+				case 'img'://transoforma imagens em sticker
+					if (isQuotedSticker) {
+						await kaotic.reply(from, mess.entendido(), id)
+						const mediaData = await decryptMedia(quotedMsg, uaOverride)
+						await kaotic.sendFile(from, `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`, '', '', id)
+					} else return await kaotic.reply(from, mess.nofigu(), id)
+				break
+				
+				case 'sticker':;case 'fig':;case 'figurinha':;case 'stiker':;case 'f':;case 's':
+					const sharpre = async (mimetype, isCircle, noCut, mediaData) => { await sharp(mediaData).resize({ width: 512, height: 512, fit: 'fill' }).toBuffer().then(async (resizedImageBuffer) => { await Kaotic.sendImageAsSticker(from, `data:${mimetype};base64,${resizedImageBuffer.toString('base64')}`, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle }) }) }
+					if (isMedia && isImage) {
+						await kaotic.reply(from, mess.wait(), id)
+						const mediaData = await decryptMedia(message, uaOverride)
+						if (arks.includes('-circle')) { var isCircle = true } else { var isCircle = false }
+						if (arks.includes('-nocut')) { var noCut = true } else { var noCut = false }
+						if (arks.includes('-fill')) { return await sharpre(mimetype, isCircle, noCut, mediaData) }
+						await kaotic.sendImageAsSticker(from, `data:${mimetype};base64,${mediaData.toString('base64')}`, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+					} else if (isQuotedImage) {
+						await kaotic.reply(from, mess.entendido(), id)
+						const mediaData = await decryptMedia(quotedMsg, uaOverride)
+						if (arks.includes('-circle')) { var isCircle = true } else { var isCircle = false }
+						if (arks.includes('-nocut')) { var noCut = true } else { var noCut = false }
+						if (arks.includes('-fill')) { return await sharpre(quotedMsg.mimetype, isCircle, noCut, mediaData) }
+						await kaotic.sendImageAsSticker(from, `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+					} else if (args.length == 1) {
+						await kaotic.reply(from, mess.entendido(), id)
+						if (isUrl(url)) {
+							if (arks.includes('-circle')) { var isCircle = true } else { var isCircle = false }
+							if (arks.includes('-nocut')) { var noCut = true } else { var noCut = false }
+							await kaotic.sendStickerfromUrl(from, url, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+						} else return await kaotic.reply(from, mess.semlink(), id)
+					} else return await kaotic.reply(from, mess.figurinha(), id)
+					break
+								
+					
 			default:
 
 				return await kaotic.reply(from, `Comando não existe`, id)
