@@ -509,7 +509,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		}
 
 		// Anti Flood para grupos
-		if (isCmd && muitoUsado(from) && isGroupMsg) {
+		if (isCmd && muitoUsado(from) && isGroupMsg && !eDono) {
 			await addXp(user, -100, nivel);
 			return console.log(cores('> [FLOOD AS]', 'red'),
 				cores(moment(t * 1000).format('DD/MM/YY HH:mm:ss'), 'gold'),
@@ -593,12 +593,6 @@ module.exports = kconfig = async (kaotic, message) => {
 				case 'menu':
 
 					return await kaotic.reply(from, `Envia menu de comandos primario`, id)
-
-
-				case 'menu2':
-
-					return await kaotic.reply(from, `Envia menu de comandos secundario`, id)
-
 
 				case 'comandos':
 				case 'comando':
@@ -773,30 +767,12 @@ module.exports = kconfig = async (kaotic, message) => {
 				const mping = processTime(t, moment())
 
 				//envia o menu com as informações
-				await kaotic.sendText(from, mess.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
-
-				break
-
-			case 'menu2'://menu secundario
-
-				//pega as msgs
-				const theMsg1 = await getMsg(user, msgcount)
-
-				//pega o xp
-				const uzrXp1 = await getXp(user, nivel)
-
-				//pega o nivel
-				const uzrlvl1 = await getLevel(user, nivel)
-
-				//nivel pra subir
-				const uneedxp1 = 5 * Math.pow(uzrlvl1, 2) + 50 * uzrlvl1 + 100
-
-				//ping
-				const mping1 = processTime(t, moment())
-
-				//envia o menu
-				await kaotic.sendText(from, mess.menu2(pushname, time, theMsg1, uzrXp1, uneedxp1, uzrlvl1, mping1, patente))
-
+				if(side == 1){
+				await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', mess.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
+				}
+				else{
+					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', mess.menu2(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
+				}
 				break
 
 			case 'comandos':
@@ -931,7 +907,8 @@ module.exports = kconfig = async (kaotic, message) => {
 			case 'licenca':
 			case 'licença':
 
-				kaotic.sendFile(from, './lib/midia/img/licenca.png', 'licenca.png')
+				kaotic.sendFile(from, './lib/midia/img/licenca.jpg', 'licenca.png')
+				await dormir(2000)
 				kaotic.sendTextWithMentions(from, mess.licenca())
 				kaotic.sendPtt(from, './lib/midia/audio/termos.mp3')
 
