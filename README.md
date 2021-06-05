@@ -38,7 +38,8 @@ Bot está em constante atualização fique ligado para novas features
 - [ ] Jogos
 - [ ] nsfw
 - [x] I.A
-- [ ] Stickers
+- [x] Stickers
+- [x] Figurinhas Animadas
 - [ ] Consultas
 - [x] anti travas
 - [x] anti fakes
