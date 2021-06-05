@@ -576,9 +576,58 @@ module.exports = kconfig = async (kaotic, message) => {
 				case 'welcome':
 				case 'saudacoes':
 
-					return await kaotic.reply(from, `Comando feito para ligar e desligar as saudações no grupo,\n\npara ligar difite ${prefix}welcome on\npara desativar digite ${prefix}welcome off`)
+					return await kaotic.reply(from, `Comando feito para ligar e desligar as saudações no grupo,\n\npara ligar difite ${prefix}welcome on\npara desativar digite ${prefix}welcome off`, id)
 
 				break
+
+				case 'menu':
+
+				return await kaotic.reply(from, `Envia menu de comandos primario`, id)
+
+				break
+
+				case 'menu2':
+
+				return await kaotic.reply(from, `Envia menu de comandos secundario`, id)
+
+				break
+
+				case 'comandos':
+				case 'comando':
+					
+					return await kaotic.reply(from, `envia todos os comandos do bot`, id)
+
+				break
+
+				case 'img':
+
+					return await kaotic.reply(from, `transforma  figurinhas em imagens`, id)
+
+				break
+
+				case 'sticker':
+				case 'fig':
+				case 'figurinha':
+				case 'stiker':
+				case 'f':
+				case 's':
+
+					return await kaotic.reply(from, 
+						`envia uma foto, marcada ou comentada, como uma figurinha`, id)
+
+				break
+
+				case 'stickergif':
+				case 'gif':
+				case 'g':
+				case 'gifsticker':
+
+					return await kaotic.reply(from, 
+						`Marque ou responda um video ou gif, para transformalo em figurinha animada`, id)
+
+				break
+
+
 
 				/*
 					// para criar um --help, coloque no seguinte formato
@@ -701,61 +750,177 @@ module.exports = kconfig = async (kaotic, message) => {
 			 
             break
 
-			case 'menu':;case ''://menu primario
+			case 'menu'://menu primario
+
+				//numero de mensagens
 				const theMsg = await getMsg(user, msgcount)
+
+				//xp
 				const uzrXp = await getXp(user, nivel)
+
+				//nivel
 				const uzrlvl = await getLevel(user, nivel)
+
+				//nivel para up
 				const uneedxp = 5 * Math.pow(uzrlvl, 2) + 50 * uzrlvl + 100
+
+				//ping
 				const mping = processTime(t, moment())
+
+				//envia o menu com as informações
 				await kaotic.sendText(from, mess.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
+				
 				break
 
 				case 'menu2'://menu secundario
+
+					//pega as msgs
 					const theMsg1 = await getMsg(user, msgcount)
+
+					//pega o xp
 					const uzrXp1 = await getXp(user, nivel)
+
+					//pega o nivel
 					const uzrlvl1 = await getLevel(user, nivel)
+
+					//nivel pra subir
 					const uneedxp1 = 5 * Math.pow(uzrlvl1, 2) + 50 * uzrlvl1 + 100
+
+					//ping
 					const mping1 = processTime(t, moment())
+
+					//envia o menu
 					await kaotic.sendText(from, mess.menu2(pushname, time, theMsg1, uzrXp1, uneedxp1, uzrlvl1, mping1, patente))
+					
 					break
 
-				case 'comandos':;case 'comando'://todos os comandos
+				case 'comandos':
+				case 'comando'://todos os comandos
 					await kaotic.sendText(from, mess.comandos())
 				break
 				
-				case 'img'://transoforma imagens em sticker
-					if (isQuotedSticker) {
+				case 'img'://transoforma stickers em imagens
+
+					//verifica se tem imagem marcada
+					if (!isQuotedSticker) return await kaotic.reply(from, mess.nofigu(), id)
+						
+						//envia msg para 'entendido'
 						await kaotic.reply(from, mess.entendido(), id)
+
+						//decrypta a figurinha
 						const mediaData = await decryptMedia(quotedMsg, uaOverride)
+
+						//envia a foto
 						await kaotic.sendFile(from, `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`, '', '', id)
-					} else return await kaotic.reply(from, mess.nofigu(), id)
+					
 				break
 				
-				case 'sticker':;case 'fig':;case 'figurinha':;case 'stiker':;case 'f':;case 's':
-					const sharpre = async (mimetype, isCircle, noCut, mediaData) => { await sharp(mediaData).resize({ width: 512, height: 512, fit: 'fill' }).toBuffer().then(async (resizedImageBuffer) => { await Kaotic.sendImageAsSticker(from, `data:${mimetype};base64,${resizedImageBuffer.toString('base64')}`, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle }) }) }
+				case 'sticker':
+				case 'fig':
+				case 'figurinha':
+				case 'stiker':
+				case 'f':
+				case 's':
+
+					const sharpre = async (mimetype, isCircle, noCut, mediaData) => { 
+						await sharp(mediaData).resize({
+							 width: 512, height: 512, fit: 'fill' 
+							}).toBuffer().then(async (resizedImageBuffer) => { 
+								await Kaotic.sendImageAsSticker(from, 
+									`data:${mimetype};base64,${resizedImageBuffer.toString('base64')}`, 
+									{ author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle }
+									) 
+								}) 
+							}
+
+					
 					if (isMedia && isImage) {
+
 						await kaotic.reply(from, mess.wait(), id)
 						const mediaData = await decryptMedia(message, uaOverride)
-						if (arks.includes('-circle')) { var isCircle = true } else { var isCircle = false }
-						if (arks.includes('-nocut')) { var noCut = true } else { var noCut = false }
-						if (arks.includes('-fill')) { return await sharpre(mimetype, isCircle, noCut, mediaData) }
-						await kaotic.sendImageAsSticker(from, `data:${mimetype};base64,${mediaData.toString('base64')}`, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+
+						if (arks.includes('-circle')) { var isCircle = true } 
+						else { var isCircle = false }
+
+						if (arks.includes('-nocut')) { var noCut = true } 
+						else { var noCut = false }
+
+						if (arks.includes('-fill')) { 
+							return await sharpre(mimetype, isCircle, noCut, mediaData) 
+						}
+
+						await kaotic.sendImageAsSticker(from, 
+							`data:${mimetype};base64,${mediaData.toString('base64')}`, 
+							{ author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+
 					} else if (isQuotedImage) {
+
 						await kaotic.reply(from, mess.entendido(), id)
 						const mediaData = await decryptMedia(quotedMsg, uaOverride)
-						if (arks.includes('-circle')) { var isCircle = true } else { var isCircle = false }
-						if (arks.includes('-nocut')) { var noCut = true } else { var noCut = false }
-						if (arks.includes('-fill')) { return await sharpre(quotedMsg.mimetype, isCircle, noCut, mediaData) }
-						await kaotic.sendImageAsSticker(from, `data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
-					} else if (args.length == 1) {
+
+						if (arks.includes('-circle')) { var isCircle = true } 
+						else { var isCircle = false }
+
+						if (arks.includes('-nocut')) { var noCut = true } 
+						else { var noCut = false }
+
+						if (arks.includes('-fill')) { 
+							return await sharpre(quotedMsg.mimetype, isCircle, noCut, mediaData) 
+						}
+						await kaotic.sendImageAsSticker(from, 
+							`data:${quotedMsg.mimetype};base64,${mediaData.toString('base64')}`, 
+							{ author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+
+					} 
+					else if (args.length == 1) {
+
 						await kaotic.reply(from, mess.entendido(), id)
+						
 						if (isUrl(url)) {
-							if (arks.includes('-circle')) { var isCircle = true } else { var isCircle = false }
-							if (arks.includes('-nocut')) { var noCut = true } else { var noCut = false }
-							await kaotic.sendStickerfromUrl(from, url, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+
+							if (arks.includes('-circle')) { var isCircle = true } 
+							else { var isCircle = false }
+
+							if (arks.includes('-nocut')) { var noCut = true } 
+							else { var noCut = false }
+
+							await kaotic.sendStickerfromUrl(from, url, { method: 'get' }, 
+							{ author: config.author, pack: config.pack, keepScale: noCut, circle: isCircle })
+
 						} else return await kaotic.reply(from, mess.semlink(), id)
+
 					} else return await kaotic.reply(from, mess.figurinha(), id)
+
 					break
+
+				case 'stickergif':
+				case 'gif':
+				case 'g':
+				case 'gifsticker':
+
+				//verifica se é, foto, ou video, seja marcado ou comentado
+					if (isMedia && 
+						isVideo || 
+						isGif || 
+						isQuotedVideo || 
+						isQuotedGif) {
+
+						//espere
+						await kaotic.reply(from, mess.entendido(), id)
+
+						//encrypta mensagem marcada
+						const encryptMedia = isQuotedGif || isQuotedVideo ? quotedMsg : message
+
+						//decrypta
+						const mediaData = await decryptMedia(encryptMedia, uaOverride)
+
+						//envia a mensagem
+						await kaotic.sendMp4AsSticker(from, mediaData, null, { stickerMetadata: true, pack: config.pack, author: config.author, fps: 10, crop: true, loop: 0 }).catch(async () => { await kaotic.reply(from, mess.gifail(), id) })
+					} 
+					
+					else return await kaotic.reply(from, mess.videoOuGif(pushname), id)
+
+           	 	break
 								
 					
 			default:
