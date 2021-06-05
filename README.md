@@ -12,7 +12,7 @@
 
 <p align="center">
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-features">Features</a> •
-<a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-requisitos">Requisitoss</a> •
+<a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-requisitos">Requisitos</a> •
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-install">Install</a> •
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-iniciar">Run</a> •
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-agradecimentos">Agradecimentos</a> •
