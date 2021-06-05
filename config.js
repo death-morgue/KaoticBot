@@ -757,6 +757,101 @@ module.exports = kconfig = async (kaotic, message) => {
 					} else return await kaotic.reply(from, mess.figurinha(), id)
 					break
 								
+					case 'rolette':;case 'roleta':
+						const checkxpr = await getXp(user, nivel)
+						const xpMenorT = parseInt(checkxpr / 2, 10)
+						if (isNaN(args[0]) || !isInt(args[0]) || Number(args[0]) >= xpMenorT || Number(args[0]) < 250) return await kill.reply(from, mess.gaming(checkxpr, xpMenorT), id)
+						var nrolxp = Math.floor(Math.random() * -milSort) - Number(args[0])
+						var prolxp = Math.floor(Math.random() * milSort) + Number(args[0])
+						const limitrl = await getLimit(user, daily)
+						if (limitrl !== undefined && cd - (Date.now() - limitrl) > 0) {
+							const time = ms(cd - (Date.now() - limitrl))
+							await kill.reply(from, mess.limitgame(), id)
+						} else {
+							if (side == 1) {
+								await kill.sendFile(from, './lib/media/img/roleta1.png', 'rol1.png', mess.loseshot(nrolxp), id)
+								await sleep(2000)
+								await addXp(user, nrolxp, nivel)
+							} else if (side == 2) {
+								await kill.sendFile(from, './lib/media/img/roleta.jpg', 'rol.jpg', mess.winshot(prolxp), id)
+								await sleep(2000)
+								await addXp(user, prolxp, nivel)
+							}
+							await addLimit(user, daily) // remova para tirar o limite dos jogos
+						}
+						break
+						
+						
+					case 'flip':
+						const checkxp = await getXp(user, nivel)
+						const xpMenorc = parseInt(checkxp / 2, 10)
+						if (isNaN(args[1]) || !isInt(args[1]) || Number(args[1]) >= xpMenorc || Number(args[1]) < 250) return await kill.reply(from, mess.gaming(checkxp, xpMenorc), id)
+						var nflipxp = Math.floor(Math.random() * -milSort) - Number(args[1])
+						var pflipxp = Math.floor(Math.random() * milSort) + Number(args[1])
+						const limitfp = await getLimit(user, daily)
+						if (limitfp !== undefined && cd - (Date.now() - limitfp) > 0) {
+							const time = ms(cd - (Date.now() - limitfp))
+							await kill.reply(from, mess.limitgame(), id)
+						} else {
+							if (args[0] == 'cara' || args[0] == 'coroa') {
+								if (side == 1) {
+									await kill.sendStickerfromUrl(from, 'https://i.ibb.co/LJjkVK5/heads.png', { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
+									if (args[0] == 'cara') {
+										await kill.reply(from, mess.flipwin(pflipxp) + ' "cara".', id)
+										await sleep(2000)
+										await addXp(user, pflipxp, nivel)
+									} else {
+										await kill.reply(from, mess.fliplose(nflipxp) + ' "coroa".', id)
+										await sleep(2000)
+										await addXp(user, nflipxp, nivel)
+									}
+								} else {
+									await kill.sendStickerfromUrl(from, 'https://i.ibb.co/wNnZ4QD/tails.png', { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
+									if (args[0] == 'coroa') {
+										await kill.reply(from, mess.flipwin(pflipxp) + ' "coroa".', id)
+										await sleep(2000)
+										await addXp(user, pflipxp, nivel)
+									} else {
+										await sleep(2000)
+										await kill.reply(from, mess.fliplose(nflipxp) + ' "cara".', id)
+										await addXp(user, nflipxp, nivel)
+									}
+								}
+							} else return await kill.reply(from, mess.fliphow(), id)
+							await addLimit(user, daily) // remova para tirar o limite dos jogos
+						}
+						break
+						
+						
+					case 'cassino':
+						var checkxpc = await getXp(user, nivel)
+						const xpMenor = parseInt(checkxpc / 2, 10)
+						if (isNaN(args[0]) || !isInt(args[0]) || Number(args[0]) >= xpMenor || Number(args[0]) < 250) return await kill.reply(from, mess.gaming(checkxpc, xpMenor), id)
+						var ncasxp = Math.floor(Math.random() * -milSort) - Number(args[0])
+						var pcasxp = Math.floor(Math.random() * milSort) + Number(args[0])
+						const limitcs = await getLimit(user, daily)
+						if (limitcs !== undefined && cd - (Date.now() - limitcs) > 0) {
+							const time = ms(cd - (Date.now() - limitcs))
+							await kill.reply(from, mess.limitgame(), id)
+						} else {
+							var cassin = ['🍒', '🎃', '🍐']
+							const cassin1 = cassin[Math.floor(Math.random() * cassin.length)]
+							const cassin2 = cassin[Math.floor(Math.random() * cassin.length)]
+							const cassin3 = cassin[Math.floor(Math.random() * cassin.length)]
+							var cassinend = cassin1 + cassin2 + cassin3
+							if (cassinend == '🍒🍒🍒' || cassinend == '🎃🎃🎃' || cassinend == '🍐🍐🍐') {
+								await kill.reply(from, mess.caswin(cassin1, cassin2, cassin3, pcasxp), id)
+								await sleep(2000)
+								await addXp(user, Number(pcasxp), nivel)
+							} else {
+								await kill.reply(from, mess.caslose(cassin1, cassin2, cassin3, ncasxp), id)
+								await sleep(2000)
+								await addXp(user, Number(ncasxp), nivel)
+							}
+							await addLimit(user, daily) // remova para tirar o limite de tempo
+						}
+						break
+						
 					
 			default:
 
