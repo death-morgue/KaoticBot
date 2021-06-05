@@ -578,12 +578,10 @@ module.exports = kconfig = async (kaotic, message) => {
 
 					return await kaotic.reply(from, `Comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`, id)
 
-					break
 
 				case 'rank':
 
 					return await kaotic.reply(from, `Comando feito para ligar as funções de xp e jogos no grupo,\n\npara ativar digite ${prefix}rank on\npara desativar digite ${prefix}rank off`, id)
-					break
 
 				case 'boasvindas':
 				case 'welcome':
@@ -591,32 +589,27 @@ module.exports = kconfig = async (kaotic, message) => {
 
 					return await kaotic.reply(from, `Comando feito para ligar e desligar as saudações no grupo,\n\npara ligar difite ${prefix}welcome on\npara desativar digite ${prefix}welcome off`, id)
 
-					break
 
 				case 'menu':
 
 					return await kaotic.reply(from, `Envia menu de comandos primario`, id)
 
-					break
 
 				case 'menu2':
 
 					return await kaotic.reply(from, `Envia menu de comandos secundario`, id)
 
-					break
 
 				case 'comandos':
 				case 'comando':
 
 					return await kaotic.reply(from, `envia todos os comandos do bot`, id)
 
-					break
 
 				case 'img':
 
 					return await kaotic.reply(from, `transforma  figurinhas em imagens`, id)
 
-					break
 
 				case 'sticker':
 				case 'fig':
@@ -627,7 +620,6 @@ module.exports = kconfig = async (kaotic, message) => {
 
 					return await kaotic.reply(from, `envia uma foto, marcada ou comentada, como uma figurinha`, id)
 
-					break
 
 				case 'stickergif':
 				case 'gif':
@@ -636,8 +628,12 @@ module.exports = kconfig = async (kaotic, message) => {
 
 					return await kaotic.reply(from, `Marque ou responda um video ou gif, para transformalo em figurinha animada`, id)
 
-					break
 
+				case 'license':
+				case 'licenca':
+				case 'licença':
+				 
+					return await kaotic.reply(from, `Esse BOT é lincenciado pelo MIT(Massachusetts Institute of Technology), digite ${prefix}licença para ver`, id)
 
 
 				/*
@@ -646,14 +642,12 @@ module.exports = kconfig = async (kaotic, message) => {
 
 						return await kaotic.reply(from, `sua explicação do comando`)
 
-					break
 				*/
 
 				default:
 
 					return await kaotic.sendText(from, `Comando não existe`)
 
-					break
 			}
 
 		}
@@ -929,16 +923,25 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.sendMp4AsSticker(from, mediaData, null, { stickerMetadata: true, pack: config.pack, author: config.author, fps: 10, crop: true, loop: 0 }).catch(async () => { await kaotic.reply(from, mess.gifail(), id) })
 				}
 
-				else return await kaotic.reply(from, mess.videoOuGif(pushname), id)
+					else return await kaotic.reply(from, mess.videoOuGif(pushname), id)
 
-				break
+			break
+
+			case 'license':
+			case 'licenca':
+			case 'licença':
+
+				kaotic.sendFile(from, './lib/midia/img/licenca.png', 'licenca.png')
+				kaotic.sendTextWithMentions(from, mess.licenca())
+				kaotic.sendPtt(from, './lib/midia/audio/termos.mp3')
+
+			break
 
 
 			default:
 
 				return await kaotic.reply(from, `Comando não existe`, id)
 
-				break
 		}
 
 	} catch (err) {
