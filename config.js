@@ -650,6 +650,10 @@ module.exports = kconfig = async (kaotic, message) => {
 				case 'bantempo':
 			
 					return await kaotic.reply(from, `Bani a pessoa por um determinado tempo ex \n ${prefix}banirpor @Deyvisson 10 \nou marca / cita mensagen${prefix}banirpor 10\n em dez minutos colocarei novamente`, id)
+			
+				case 'attp':
+					return await kaotic.reply(from, `cria uma figurinha com palavras`, id)
+
 				/*
 					// para criar um --help, coloque no seguinte formato
 					case 'comando':
@@ -994,100 +998,27 @@ module.exports = kconfig = async (kaotic, message) => {
 					case 'rolette':;case 'roleta':
 						const checkxpr = await getXp(user, nivel)
 						const xpMenorT = parseInt(checkxpr / 2, 10)
-						if (isNaN(args[0]) || !isInt(args[0]) || Number(args[0]) >= xpMenorT || Number(args[0]) < 250) return await kaotic.reply(from, mess.gaming(checkxpr, xpMenorT), id)
+						if (isNaN(args[0]) || !numInt(args[0]) || Number(args[0]) >= xpMenorT || Number(args[0]) < 250) return await kaotic.reply(from, mess.praposta(checkxpr, xpMenorT), id)
 						var nrolxp = Math.floor(Math.random() * -milSort) - Number(args[0])
 						var prolxp = Math.floor(Math.random() * milSort) + Number(args[0])
 						const limitrl = await getLimit(user, daily)
 						if (limitrl !== undefined && cd - (Date.now() - limitrl) > 0) {
 							const time = ms(cd - (Date.now() - limitrl))
-							await kaotic.reply(from, mess.limitgame(), id)
+							await kaotic.reply(from, mess.limitejogo(), id)
 						} else {
 							if (side == 1) {
-								await kaotic.sendFile(from, './lib/media/img/roleta1.png', 'rol1.png', mess.loseshot(nrolxp), id)
+								await kaotic.sendFile(from, './lib/media/img/perdeu.png', 'rol1.png', mess.perde(nrolxp), id)
 								await sleep(2000)
 								await addXp(user, nrolxp, nivel)
 							} else if (side == 2) {
-								await kaotic.sendFile(from, './lib/media/img/roleta.jpg', 'rol.jpg', mess.winshot(prolxp), id)
+								await kaotic.sendFile(from, './lib/media/img/win.jpg', 'rol.jpg', mess.ganho(prolxp), id)
 								await sleep(2000)
 								await addXp(user, prolxp, nivel)
 							}
 							await addLimit(user, daily) // remova para tirar o limite dos jogos
 						}
 						break
-						
-						
-					case 'flip':
-						const checkxp = await getXp(user, nivel)
-						const xpMenorc = parseInt(checkxp / 2, 10)
-						if (isNaN(args[1]) || !isInt(args[1]) || Number(args[1]) >= xpMenorc || Number(args[1]) < 250) return await kaotic.reply(from, mess.gaming(checkxp, xpMenorc), id)
-						var nflipxp = Math.floor(Math.random() * -milSort) - Number(args[1])
-						var pflipxp = Math.floor(Math.random() * milSort) + Number(args[1])
-						const limitfp = await getLimit(user, daily)
-						if (limitfp !== undefined && cd - (Date.now() - limitfp) > 0) {
-							const time = ms(cd - (Date.now() - limitfp))
-							await kaotic.reply(from, mess.limitgame(), id)
-						} else {
-							if (args[0] == 'cara' || args[0] == 'coroa') {
-								if (side == 1) {
-									await kaotic.sendStickerfromUrl(from, 'https://i.ibb.co/LJjkVK5/heads.png', { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
-									if (args[0] == 'cara') {
-										await kaotic.reply(from, mess.flipwin(pflipxp) + ' "cara".', id)
-										await sleep(2000)
-										await addXp(user, pflipxp, nivel)
-									} else {
-										await kaotic.reply(from, mess.fliplose(nflipxp) + ' "coroa".', id)
-										await sleep(2000)
-										await addXp(user, nflipxp, nivel)
-									}
-								} else {
-									await kaotic.sendStickerfromUrl(from, 'https://i.ibb.co/wNnZ4QD/tails.png', { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
-									if (args[0] == 'coroa') {
-										await kaotic.reply(from, mess.flipwin(pflipxp) + ' "coroa".', id)
-										await sleep(2000)
-										await addXp(user, pflipxp, nivel)
-									} else {
-										await sleep(2000)
-										await kaotic.reply(from, mess.fliplose(nflipxp) + ' "cara".', id)
-										await addXp(user, nflipxp, nivel)
-									}
-								}
-							} else return await kaotic.reply(from, mess.fliphow(), id)
-							await addLimit(user, daily) // remova para tirar o limite dos jogos
-						}
-						break
-						
-						
-					case 'cassino':
-						var checkxpc = await getXp(user, nivel)
-						const xpMenor = parseInt(checkxpc / 2, 10)
-						if (isNaN(args[0]) || !isInt(args[0]) || Number(args[0]) >= xpMenor || Number(args[0]) < 250) return await kaotic.reply(from, mess.gaming(checkxpc, xpMenor), id)
-						var ncasxp = Math.floor(Math.random() * -milSort) - Number(args[0])
-						var pcasxp = Math.floor(Math.random() * milSort) + Number(args[0])
-						const limitcs = await getLimit(user, daily)
-						if (limitcs !== undefined && cd - (Date.now() - limitcs) > 0) {
-							const time = ms(cd - (Date.now() - limitcs))
-							await kaotic.reply(from, mess.limitgame(), id)
-						} else {
-							var cassin = ['🍒', '🎃', '🍐']
-							const cassin1 = cassin[Math.floor(Math.random() * cassin.length)]
-							const cassin2 = cassin[Math.floor(Math.random() * cassin.length)]
-							const cassin3 = cassin[Math.floor(Math.random() * cassin.length)]
-							var cassinend = cassin1 + cassin2 + cassin3
-							if (cassinend == '🍒🍒🍒' || cassinend == '🎃🎃🎃' || cassinend == '🍐🍐🍐') {
-								await kaotic.reply(from, mess.caswin(cassin1, cassin2, cassin3, pcasxp), id)
-								await sleep(2000)
-								await addXp(user, Number(pcasxp), nivel)
-							} else {
-								await kaotic.reply(from, mess.caslose(cassin1, cassin2, cassin3, ncasxp), id)
-								await sleep(2000)
-								await addXp(user, Number(ncasxp), nivel)
-							}
-							await addLimit(user, daily) // remova para tirar o limite de tempo
-						}
-						break
-						
-					
-
+										
 			case 'stickergif':
 			case 'gif':
 			case 'g':
@@ -1128,7 +1059,31 @@ module.exports = kconfig = async (kaotic, message) => {
 
 			break
 
-
+			case 'attp':
+				if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'palavras/words/números/numbers.', id)
+				await kaotic.reply(from, mess.entendido(), id)
+				await axios.get(`https://api.xteam.xyz/attp?file&text=${encodeURIComponent(body.slice(6))}`, { responseType: 'arraybuffer' }).then(async (response) => {
+					const attp = Buffer.from(response.data, 'binary').toString('base64')
+					await kaotic.sendImageAsSticker(from, attp, { author: config.author, pack: config.pack, keepScale: true })
+				})
+				break
+	
+				case 'nobg':
+					if (isMedia && type === 'image' || isQuotedImage) {
+						const nobgmd = isQuotedImage ? quotedMsg : message
+						const mediaData = await decryptMedia(nobgmd, uaOverride)
+						const imageBase64 = `data:${nobgmd.mimetype};base64,${mediaData.toString('base64')}`
+						await kaotic.reply(from, mess.wait(), id) 
+						const base64img = imageBase64
+						const outFile = `./lib/media/img/${user.replace('@c.us', '')}noBg.png`
+						var result = await removeBackgroundFromImageBase64({ base64img, apiKey: config.nobg, size: 'auto', type: 'auto', outFile })
+						await fs.writeFile(outFile, result.base64img)
+						await kaotic.sendImageAsSticker(from, `data:${nobgmd.mimetype};base64,${result.base64img}`, { pack: config.pack, author: config.author, keepScale: true })
+						await kaotic.reply(from, mess.nobgms(), id)
+						await sleep(10000).then(async () => { await fs.unlinkSync(`./lib/media/img/${user.replace('@c.us', '')}noBg.png`) })
+					} else return await kaotic.reply(from, mess.soimg(), id)
+					break
+		
 			default:
 
 				return await kaotic.reply(from, `Comando não existe`, id)
