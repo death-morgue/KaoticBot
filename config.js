@@ -40,7 +40,7 @@ const { getLevel, getMsg, getXp, addLevel, addXp, getRank, isWin, wait, addLimit
 const poll = require('./lib/poll')
 const config = require('./lib/config/Bot/config.json')
 const patents = require('./lib/config/Bot/patentes.json')
-const { meuIdioma } = require('./lib/lingua')
+const { meuIdioma, meuMenu } = require('./lib/lingua')
 const { reply } = require('canvacord/src/Canvacord')
 const { owner, baninjusto } = require('./lib/lingua/pt')
 const { color } = require('../Kaotic/lib/functions')
@@ -56,6 +56,7 @@ const akinit = async () => { try { await aki.start() } catch (error) { console.l
 akinit()*/
 const cd = Number(config.timePlay * 60000) // * 60000 - Transforma o valor do tempo de aposta em minutos
 const mess = meuIdioma()
+const menus = meuMenu()
 moment.tz.setDefault('America/Sao_Paulo').locale('pt_BR')
 const emoji = new EmojiAPI();
 var jogadas = 0; var isMuteAll = 0; var oneImage = 0; var oneLink = 0; var oneTrava = 0
@@ -606,7 +607,10 @@ module.exports = kconfig = async (kaotic, message) => {
 				case 'img':
 
 					return await kaotic.reply(from, `transforma  figurinhas em imagens`, id)
+				
+				case 'emoji':
 
+					return await kaotic.reply(from, `transforma  emoji em figurinha\nEx: ${prefix}emoji 😍 `, id)
 
 				case 'sticker':
 				case 'fig':
@@ -626,9 +630,7 @@ module.exports = kconfig = async (kaotic, message) => {
 					return await kaotic.reply(from, `Marque ou responda um video ou gif, para transformalo em figurinha animada`, id)
 
 
-				case 'license':
-				case 'licenca':
-				case 'licença':
+				case 'license':;case 'licenca':;case 'licença':
 				 
 					return await kaotic.reply(from, `Esse BOT é lincenciado pelo MIT(Massachusetts Institute of Technology), digite ${prefix}licença para ver`, id)
 
@@ -636,25 +638,20 @@ module.exports = kconfig = async (kaotic, message) => {
 
 					return await kaotic.reply(from, `Comando feito para dar ban temporario em alguem, basta marcar e colocar o tempo em minutos.`)
 
-				case 'kick':
-				case 'k':
-				case 'ban':
-				case 'k':
-				case 'b':
-				case 'banir':
+				case 'kick':;case 'k':;case 'ban':;case 'k':;case 'b':;case 'banir':
 					
 					return await kaotic.reply(from, `Comando usado para banir os arroaceiros do grupo!`,id)
 				
-				case 'banirpor':
-				case 'softban':
-				case 'bantempo':
+				case 'banirpor':;case 'softban':;case 'bantempo':
 			
 					return await kaotic.reply(from, `Bani a pessoa por um determinado tempo ex \n ${prefix}banirpor @Deyvisson 10 \nou marca / cita mensagen${prefix}banirpor 10\n em dez minutos colocarei novamente`, id)
 			
 				case 'attp':
 					return await kaotic.reply(from, `cria uma figurinha com palavras`, id)
-
-				/*
+					
+				case 'gps':
+					return await kaotic.reply(from, `Grupos oficiais do Kaotic`, id)
+					/*
 					// para criar um --help, coloque no seguinte formato
 					case 'comando':
 
@@ -889,16 +886,45 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				//envia o menu com as informações
 				if(side == 1){
-				await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', mess.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
+				await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', menus.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
 				}
 				else{
-					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', mess.menu2(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
+					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', menus.menu2(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
 				}
 				break
 
 			case 'comandos':
 			case 'comando'://todos os comandos
-				await kaotic.sendText(from, mess.comandos())
+				await kaotic.sendText(from, menus.comandos())
+				break
+
+	    	case 'gps':
+			    await kaotic.sendText(from, menus.gps())
+			    break
+
+			case 'gp': // by luix
+				var grupoMsgCliente = '0'
+				try{
+				grupoMsgCliente = args[0]
+			}catch(erro){
+				kaotic.reply(from, `Qual o grupo deseja o link?\n\nCaso tenha duvida digite ${prefix}gps.`, id)
+			}
+			switch (grupoMsgCliente){
+				case '1':
+					kaotic.getGroupInviteLink('557588737769-1620501506@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a, `\n\nGrupo oficial do Kaotic Bot`))
+					break
+				case '2':
+					kaotic.getGroupInviteLink('557588737769-1553711859@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a))
+					break
+				case '3':
+					kaotic.getGroupInviteLink('553199949012-1601559160@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a))
+					break
+				case '4':
+					kaotic.getGroupInviteLink('557588737769-1559309169@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a))
+					break
+				default:
+					kaotic.reply(from, `Qual o grupo deseja o link?\n\nCaso tenha duvida digite ${prefix}gps.`, id)
+			}
 				break
 
 			case 'img'://transoforma stickers em imagens
@@ -1049,11 +1075,18 @@ module.exports = kconfig = async (kaotic, message) => {
 
 
 					break
-										
-			case 'stickergif':
-			case 'gif':
-			case 'g':
-			case 'gifsticker':
+				case 'bfigurinha':
+					if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'palavras/words/números/numbers.', id)
+					const stkm = await fetch(`https://api.fdci.se/sosmed/rep.php?gambar=${encodeURIComponent(body.slice(12))}`)
+					const stimg = await stkm.json()
+					let stkfm = stimg[Math.floor(Math.random() * stimg.length) + 1]
+					if (stkfm == null) return await kaotic.reply(from, mess.noResultado(), id)
+					await kaotic.sendStickerfromUrl(from, stkfm, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
+				break
+					
+					case 'stickergif':case 'gif':
+		         	case 'g':
+			        case 'gifsticker':
 
 				//verifica se é, foto, ou video, seja marcado ou comentado
 				if (isMedia &&
@@ -1114,7 +1147,18 @@ module.exports = kconfig = async (kaotic, message) => {
 						await sleep(10000).then(async () => { await fs.unlinkSync(`./lib/media/img/${user.replace('@c.us', '')}noBg.png`) })
 					} else return await kaotic.reply(from, mess.soimg(), id)
 					break
-		
+
+				case 'emoji':
+					if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'emoji.', id)
+				    emoji.get(args[0]).then(async (emoji) => {
+						await sleep(3000)
+						if (emoji.emoji == null) return await kaotic.reply(from, mess.noemoji(), id)
+						let moji = `Emoji: ${emoji.emoji}\n\nUnicode: ${emoji.unicode}\n\nNome: ${emoji.name}\n\nInformações: ${emoji.description}\n\n`
+						for (let i = 0; i < emoji.images.length; i++) { moji += `${emoji.images[i].vendor} → ${emoji.images[i].url}\n\n═════════════════\n\n` }
+							await kaotic.reply(from, moji + mess.emojis(), id)
+							await kaotic.sendStickerfromUrl(from, emoji.images[0].url, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
+						})
+						break
 			default:
 
 				return await kaotic.reply(from, `Comando não existe`, id)
