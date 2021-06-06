@@ -995,7 +995,8 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				break
 												
-					case 'rolette':;case 'roleta':
+					/*case 'rolette':
+					case 'roleta':
 						const checkxpr = await getXp(user, nivel)
 						const xpMenorT = parseInt(checkxpr / 2, 10)
 						if (isNaN(args[0]) || !numInt(args[0]) || Number(args[0]) >= xpMenorT || Number(args[0]) < 250) return await kaotic.reply(from, mess.praposta(checkxpr, xpMenorT), id)
@@ -1007,17 +1008,47 @@ module.exports = kconfig = async (kaotic, message) => {
 							await kaotic.reply(from, mess.limitejogo(), id)
 						} else {
 							if (side == 1) {
-								await kaotic.sendFile(from, './lib/media/img/perdeu.png', 'rol1.png', mess.perde(nrolxp), id)
+								await kaotic.sendFile(from, './lib/midia/img/perdeu.png', 'rol1.png', mess.perde(nrolxp), id)
 								await sleep(2000)
 								await addXp(user, nrolxp, nivel)
 							} else if (side == 2) {
-								await kaotic.sendFile(from, './lib/media/img/win.jpg', 'rol.jpg', mess.ganho(prolxp), id)
+								await kaotic.sendFile(from, './lib/midia/img/win.jpg', 'rol.jpg', mess.ganho(prolxp), id)
 								await sleep(2000)
 								await addXp(user, prolxp, nivel)
 							}
 							await addLimit(user, daily) // remova para tirar o limite dos jogos
 						}
-						break
+						break*/
+
+					case 'roleta':
+					case 'aposta':
+						if (!xp.includes(groupId)) return await kaotic(from, mess.xpGrupo(pushname, name, chat.groupMetadata.owner.replace('@c.us', '')))
+						const xpPessoa = await getXp(user, nivel)
+						const xpMinimo = parseInt(xpPessoa / 2, 10)
+
+						if(isNaN(args[0]) || !numInt(args[0]) || parseInt(args[0]) < xpMinimo || parseInt(args[0]) < 250) return await kaotic.reply(from, mess.praposta(xpPessoa, xpMinimo), id)
+						var xpGanhou = math.floor(math.random() * milSort) + parseInt(args[0])
+						var xpPerdeu = math.floor(math.random() * -milSort) - parseInt(args[0])
+						const limiteJogou = await getLimit(user, daily)
+
+						/*if(limiteJogou !== undefined && cd - (Date.now() - limiteJogou) > 0) {
+							return await kaotic.reply(from, mess.limitejogo(), id)
+						}*/
+						
+							if(side == 1){
+								await kaotic.sendFile(from, './lib/midia/img/perdeu.png', 'perdi.png',mess.perde(xpPerdeu))
+								await sleep(1000)
+								await addXp(user, xpPerdeu, nivel)
+							}else{
+								await kaotic.sendFile(from, './lib/midia/img/win.jpg', 'venceu.jpg', mess.ganho(xpGanhou))
+								await sleep(1000)
+								await addXp(user, xpGanhou, nivel)
+							}
+							//await addLimit(user, daily)
+						
+
+
+					break
 										
 			case 'stickergif':
 			case 'gif':
