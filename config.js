@@ -35,14 +35,14 @@ const sharp = require('sharp')
 
 
 // Utilidades
-const { cores, dormir, eLink, upload, muitoUsado, addFilter, traduzir, numInt } = require('./lib/funcoes')
+const { cores, sleep, eLink, upload, muitoUsado, addFilter, traduzir, numInt } = require('./lib/funcoes')
 const { getLevel, getMsg, getXp, addLevel, addXp, getRank, isWin, wait, addLimit, addMsg, getLimit, getRole } = require('./lib/gaming')
 const poll = require('./lib/poll')
 const config = require('./lib/config/Bot/config.json')
 const patents = require('./lib/config/Bot/patentes.json')
 const { meuIdioma } = require('./lib/lingua')
 const { reply } = require('canvacord/src/Canvacord')
-const { owner } = require('./lib/lingua/pt')
+const { owner, baninjusto } = require('./lib/lingua/pt')
 const options = { headless: true, userDataDir: "./logs/Chrome/Maker", args: ['--aggressive-cache-discard', '--disable-application-cache', '--disable-cache', '--disable-offline-load-stale-cache', '--disable-setuid-sandbox', '--disk-cache-size=0', '--ignore-certificate-errors', '--no-sandbox', '--single-process'] }
 // Leia a options.js para maiores detalhes
 
@@ -229,7 +229,7 @@ module.exports = kconfig = async (kaotic, message) => {
 				const levelInicial = await getLevel(user, nivel)
 				const xpAtual = Math.floor(Math.random() * 20) + 11 // XP de 10 a 30
 				const neededXp = 5 * Math.pow(levelAtual, 2) + 50 * levelAtual + 100
-				await dormir(2000)
+				await sleep(2000)
 				await addXp(user, xpAtual, nivel)
 				if (neededXp <= getXp(user, nivel)) {
 					var nivelReq = neededXp
@@ -629,6 +629,18 @@ module.exports = kconfig = async (kaotic, message) => {
 				 
 					return await kaotic.reply(from, `Esse BOT é lincenciado pelo MIT(Massachusetts Institute of Technology), digite ${prefix}licença para ver`, id)
 
+				case 'softban':
+
+					return await kaotic.reply(from, `Comando feito para dar ban temporario em alguem, basta marcar e colocar o tempo em minutos.`)
+
+				case 'kick':
+				case 'k':
+				case 'ban':
+				case 'k':
+				case 'b':
+				case 'banir':
+					
+					return await kaotic.reply(from, `Comando usado para banir os arroaceiros do grupo!`,id)
 
 				/*
 					// para criar um --help, coloque no seguinte formato
@@ -663,6 +675,158 @@ module.exports = kconfig = async (kaotic, message) => {
 					kaotic.reply(from, mess.onOff(pushname, 'grupo'), id)
 				}
 				break
+			/*case 'softban':
+			try {
+				if (isGroupMsg && isGroupAdmins || isGroupMsg && isOwner) {
+					if (!isBotGroupAdmins) return await kaotic.reply(from, mess.botademira(), id)
+					const aatimep = Number(args[0]) * 60000
+					const timeaddmsg = Number(aatimep) + 10000
+					if (quotedMsg) {
+						if (args.length == 0 || isNaN(args[0])) return await kaotic.reply(from, mess.nomark() + ' + time/tempo (minutos/minutes)\n(Ex: 30)', id)
+						const bgmcomum = quotedMsgObj.sender.id
+						if (ownerNumber.includes(bgmcomum) || groupAdmins.includes(bgmcomum)) return await kaotic.reply(from, mess.vip(), id)
+						if (!groupMembersId.includes(bgmcomum)) return await kaotic.reply(from, mess.notongp(), id)
+						await kaotic.sendTextWithMentions(from, mess.irritouqm(bgmcomum, args))
+						await sleep(3000)
+						await kaotic.removeParticipant(groupId, bgmcomum)
+						await sleep(aatimep)
+						const checkIsHere = await kaotic.getGroupMembersId(groupId)
+						if (checkIsHere.includes(bgmcomum)) return await kaotic.reply(from, mess.janogp(), id)
+						await kaotic.reply(from, mess.timeadd(), id)
+						await kaotic.addParticipant(groupId, bgmcomum)
+						await sleep(timeaddmsg)
+						await kaotic.sendText(from, mess.voltargp())
+					} else {
+						if (args.length == 0 || isNaN(args[1]) || mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar() + '\n\n@user time/tempo (minutos/minutes)\n(Ex: @user 30)', id)
+						if (!groupMembersId.includes(mentionedJidList[0])) return await kaotic.reply(from, mess.notongp(), id)
+						await kaotic.sendTextWithMentions(from, mess.irritouml(mentionedJidList, args))
+						await sleep(3000)
+						if (ownerNumber.includes(mentionedJidList[0]) || groupAdmins.includes(mentionedJidList[0])) return await kaotic.reply(from, mess.vip(), id)
+						await kaotic.removeParticipant(groupId, mentionedJidList[0])
+						await sleep(aatimep)
+						const checkIsHerea = await kaotic.getGroupMembersId(groupId)
+						if (checkIsHerea.includes(mentionedJidList[0])) return await kaotic.reply(from, mess.janogp(), id)
+						await kaotic.reply(from, mess.timeadd(), id)
+						await kaotic.addParticipant(groupId, mentionedJidList[0])
+						await sleep(timeaddmsg)
+						await kaotic.sendText(from, mess.voltargp())
+					}
+				} else if (isGroupMsg) {
+					await kaotic.reply(from, mess.soademiro(), id)
+				} else return await kaotic.reply(from, mess.sogrupo(), id)
+            } catch (error) { 
+				await kaotic.reply(from, mess.addpessoa(), id)
+				console.log(cores('[SOFTBAN]', 'crimson'), cores(`→ Obtive erros no comando ${prefix}${command} → ${error.message} - Você pode ignorar.`, 'gold'))
+			}
+            break*/
+			case 'softban':
+				try{
+					const idGrupoDoGrupo = groupId
+				if(!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
+				if (isGroupMsg && !eAdm || 
+					isGroupMsg && !eDono) return await kaotic.reply(from, mess.soAdm(), id)
+				if (!botAdm) return await kaotic.reply(from, mess.botAdm(name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+					if(quotedMsg){
+
+						const banir = quotedMsgObj.sender.id
+						const tempoBanir = parseInt(args[0]) * 60000
+						const tempoVoltar = tempoBanir + 10000
+
+						if(ownerNumber.includes(banir)) return await kaotic.reply(from, mess.vip(), id)
+						if(groupAdmins.includes(banir)) return await kaotic.reply(from, mess.removeradm(), id)
+						if(!groupMembersId.includes(banir)) return await kaotic.reply(from, mess.notongp(), id)
+
+						await kaotic.sendText(from, mess.irritouqm(banir, tempoBanir+`milisegundos`))
+						await sleep(3000)
+						await kaotic.removeParticipant(idGrupo, banir)
+						await sleep(60000)
+						await sleep(3000)
+
+						const veGrupo = await kaotic.getGroupMembersId(idGrupo)
+
+						if(!veGrupo.includes(banir)) return await kaotic.reply(from, mess.janogp(), id)
+						await kaotic.reply(from, mess.timeadd(), id)
+						await sleep(3000)
+						await kaotic.addaddParticipant(idGrupo, banir)
+						await sleep(tempoVoltar)
+						await kaotic.sendText(from, mess.voltargp())
+						
+					}
+					else{
+						if (args.length == 0 || isNaN(args[1]) || mentionedJidList.length == 0) return await kaotic.reply(from, mess.semMarcar(pushname) + '\n\nmarque alguem e coloque o tempo do ban em minutos!', id)
+						if (!groupMembersId.includes(mentionedJidList[0])) return await kaotic.reply(from, mess.notongp(), id)
+
+						const banir1 = mentionedJidList[0]
+						const tempoBanir1 = parseInt(args[1]) * 60000
+						const tempoVoltar1 = tempoBanir1 + 10000
+						if(ownerNumber.includes(banir1)) return await kaotic.reply(from, mess.vip(), id)
+						if(groupAdmins.includes(banir1)) return await kaotic.reply(from, mess.removeradm(), id)
+						if(!groupMembersId.includes(banir1)) return await kaotic.reply(from, mess.notongp(), id)
+
+						await kaotic.sendText(from, mess.irritouml(banir1, tempoBanir1+`milisegundos`))
+						await sleep(3000)
+						await kaotic.removeParticipant(idGrupo, banir1)
+						await sleep(60000)
+						await sleep(3000)
+
+						const veGrupo1 = await kaotic.getGroupMembersId(idGrupo)
+
+						if(!veGrupo1.includes(banir1)) return await kaotic.reply(from, mess.janogp(), id)
+						await kaotic.reply(from, mess.timeadd(), id)
+						await sleep(3000)
+						await kaotic.addaddParticipant(idGrupo, banir1)
+						await sleep(tempoVoltar1)
+						await kaotic.sendText(from, mess.voltargp())
+						
+					}
+				}catch(err){
+					await kaotic.sendText(from, err)
+				}
+			break
+			
+
+			case 'kick':
+			case 'k':
+			case 'ban':
+			case 'k':
+			case 'b':
+
+			if (isGroupMsg && eAdm || 
+				isGroupMsg && eDono) {
+
+				if (!botAdm) return await kaotic.reply(from, mess.botAdm(name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+				if (quotedMsg) {
+
+					const negquo = quotedMsgObj.sender.id
+
+					if (ownerNumber.includes(negquo)) return await kaotic.reply(from, mess.vip(), id)
+					if (groupAdmins.includes(negquo)) return await kaotic.reply(from, mess.removeradm(), id)
+					if (!groupMembersId.includes(negquo)) return await kaotic.reply(from, mess.notongp(), id)
+
+					await kaotic.sendTextWithMentions(from, mess.ban(negquo))
+					await kaotic.removeParticipant(groupId, negquo)
+
+				} else {
+
+					if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semMarcar(pushname), id)
+					await kaotic.sendTextWithMentions(from, mess.kick(mentionedJidList))
+
+					for (let i = 0; i < mentionedJidList.length; i++) {
+
+						if (ownerNumber.includes(mentionedJidList[i])) return await kaotic.reply(from, mess.vip(), id)
+						if (groupAdmins.includes(mentionedJidList[i])) return await kaotic.reply(from, mess.removeradm(), id)
+						
+						await kaotic.removeParticipant(groupId, mentionedJidList[i])
+
+					}
+				}
+			} else if (isGroupMsg) {
+
+				await kaotic.reply(from, mess.soAdm(pushname), id)
+			} else return await kaotic.reply(from, mess.soGrupo(pushname), id)
+
+            break
+
 
 			case 'rank': //liga e desliga o rank nos grupos
 				if (!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
@@ -908,7 +1072,7 @@ module.exports = kconfig = async (kaotic, message) => {
 			case 'licença':
 
 				kaotic.sendFile(from, './lib/midia/img/licenca.jpg', 'licenca.png')
-				await dormir(2000)
+				await sleep(2000)
 				kaotic.sendTextWithMentions(from, mess.licenca())
 				kaotic.sendPtt(from, './lib/midia/audio/termos.mp3')
 
