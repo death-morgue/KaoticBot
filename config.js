@@ -938,7 +938,7 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				if (isMedia && isImage) {
 
-					await kaotic.reply(from, mess.wait(), id)
+					await kaotic.reply(from, mess.entendido(), id)
 					const mediaData = await decryptMedia(message, uaOverride)
 
 					if (arks.includes('-circle')) { var isCircle = true }
@@ -1073,7 +1073,7 @@ module.exports = kconfig = async (kaotic, message) => {
 						const nobgmd = isQuotedImage ? quotedMsg : message
 						const mediaData = await decryptMedia(nobgmd, uaOverride)
 						const imageBase64 = `data:${nobgmd.mimetype};base64,${mediaData.toString('base64')}`
-						await kaotic.reply(from, mess.wait(), id) 
+						await kaotic.reply(from, mess.entendido(), id) 
 						const base64img = imageBase64
 						const outFile = `./lib/media/img/${user.replace('@c.us', '')}noBg.png`
 						var result = await removeBackgroundFromImageBase64({ base64img, apiKey: config.nobg, size: 'auto', type: 'auto', outFile })
