@@ -646,7 +646,9 @@ module.exports = kconfig = async (kaotic, message) => {
 					return await kaotic.reply(from, `Comando usado para banir os arroaceiros do grupo!`,id)
 				
 				case 'banirpor':
-
+				case 'softban':
+				case 'bantempo':
+			
 					return await kaotic.reply(from, `Bani a pessoa por um determinado tempo ex \n ${prefix}banirpor @Deyvisson 10 \nou marca / cita mensagen${prefix}banirpor 10\n em dez minutos colocarei novamente`, id)
 				/*
 					// para criar um --help, coloque no seguinte formato
@@ -683,6 +685,9 @@ module.exports = kconfig = async (kaotic, message) => {
 				break
 			
 			case 'banirpor':
+			case 'softban':
+			case 'bantempo':
+		
 				try {
 					if (isGroupMsg && eAdm || isGroupMsg && eDono) {
 						if (!eAdm) return await kaotic.reply(from, mess.soGrupo(), id)
