@@ -3,7 +3,7 @@ const { create, Client } = require('@open-wa/wa-automate')
 const fs = require('fs-extra')
 const kconfig = require('./config')
 const opcoes = require('./lib/opcoes')
-const { cores, dormir } = require('./lib/funcoes')
+const { cores, sleep } = require('./lib/funcoes')
 const config = require('./lib/config/Bot/config.json')
 const canvas = require('discord-canvas')
 const { meuIdioma } = require('./lib/lingua')
@@ -136,7 +136,7 @@ const start = async (kaotic = new Client()) => {
 				//black list
 				if (isAnti && fuck && !isMyBot) {
 					await kaotic.sendText(event.chat, meuIdioma().entrace())
-					await dormir(2000)
+					await sleep(2000)
 					await kaotic.removeParticipant(event.chat, event.who)
 					await kaotic.contactBlock(event.who) // Evita ser travado por putinhos
 					console.log(cores('[BLACKLIST]', 'red'), cores(`${pushname} - (${event.who.replace('@c.us', '')}) foi banido do ${name} por ter sido colocado na blacklist...`, 'yellow'))
@@ -145,7 +145,7 @@ const start = async (kaotic = new Client()) => {
 				//numero fake
 				else if (isFake && !fake && !isMyBot) {
 					await kaotic.sendTextWithMentions(event.chat, meuIdioma().nofake(event))
-					await dormir(4000) // Anti-fake e Black-List não tem anti-flood por segurança, mexa com a var welcOn para inserir
+					await sleep(4000) // Anti-fake e Black-List não tem anti-flood por segurança, mexa com a var welcOn para inserir
 					await kaotic.removeParticipant(event.chat, event.who)
 					await kaotic.contactBlock(event.who) // Evita ser travado por putinhos
 					console.log(cores('[FAKE]', 'red'), cores(`${pushname} - (${event.who.replace('@c.us', '')}) foi banido do ${name} por usar número falso ou ser de fora do país...`, 'yellow'))
