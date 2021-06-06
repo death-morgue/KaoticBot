@@ -5,7 +5,24 @@ package-lock.json
 logs
 cases.txt
 teste.txt
-lib/config/Grupos
+
+**/lib/config/Grupos/antilinks.json
+**/lib/config/Grupos/antiporn.json
+**lib/config/Grupos/antitrava.json
+**lib/config/Grupos/blacklist.json
+**lib/config/Grupos/fake.json
+**lib/config/Grupos/NSFW.json
+**lib/config/Grupos/sticker.json
+**lib/config/Grupos/welcome.json
+**lib/config/Grupos/xp.json
+
+**lib/config/Bot/config.json
+**lib/config/Bot/anti.json
+**lib/config/Bot/diario.json
+**lib/config/Bot/level.json
+**lib/config/Bot/msgcount.json
+**lib/config/Bot/silence.json
+**lib/config/Bot/Backup
 
 # managed
 **.data.json
