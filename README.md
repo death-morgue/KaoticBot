@@ -12,6 +12,7 @@
 
 <p align="center">
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-features">Features</a> •
+<a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-requisitos">Requisitos</a> •
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-install">Install</a> •
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-iniciar">Run</a> •
 <a href="https://github.com/death-morgue/KaoticBot/blob/master/README.md#-agradecimentos">Agradecimentos</a> •
@@ -30,26 +31,33 @@ Bot está em constante atualização fique ligado para novas features
 * Os que não estão, é porque ainda estão em desenvolvimento.
 
 
-- [ ] Xp
-- [ ] Contador de mensagem
-- [ ] Funções de administrador
+- [x] Xp
+- [x] Contador de mensagem
+- [x] Funções de administrador
 - [ ] Download de audios
 - [ ] Jogos
 - [ ] nsfw
-- [ ] I.A
-- [ ] Stickers
+- [x] I.A
+- [x] Stickers
+- [x] Figurinhas Animadas
 - [ ] Consultas
-- [ ] Travas
-- [ ] anti travas
+- [x] anti travas
 - [x] anti fakes
-- [ ] anti link
+- [x] anti link
 - [ ] nHentai
-- [ ] destrava
+- [x] destrava
 - [x] Boas Vindas
 - [x] Adeus
 
 
+<h2 align="center">👁️‍🗨️ Requisitos</h2>
 
+Algumas coisas são de extrema importancia e devem ser notadas para rodar o KaoticBot
+
+* Sistemas com arquitetura x64
+* Somente em computadores
+
+Infelizmente, não é possivel executar o bot em termux, sistemas x32 ou em alguns modelos de notebook :(
 <h2 align="center">🖥 Install</h2>
 <p align="center" ><img alt="paisagem" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/fundobemvindo.png"></p>
 Ainda está em desenvolvimento, por isso fique atento a atualizado no nosso git!
@@ -70,7 +78,7 @@ Para a instalação de tudo acima no Linux, você pode usar o comando abaixo:
 ```
 Caso você tenha erros com a versão do node no repositório de seu Linux, use o [(Node Source)](https://github.com/nodesource/distributions), lembre-se de usar a LTS(14).
 
-<p align="center" ><img alt="Terminal" src="https://raw.githubusercontent.com/MicaelliMedeiros/micaellimedeiros/master/image/computer-illustration.png"></p>
+<p align="center" ><img alt="Terminal" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/terminal.gif"></p>
 
 ### No ***TERMINAL***
 
@@ -105,8 +113,9 @@ git clone https://github.com/death-morgue/KaoticBot && cd KaoticBot && npm i git
            
 * [Open-Wa](https://github.com/open-wa)
 * [Luix-Guxto](https://github.com/luix-guxto)
+* [Deyvisson](https://github.com/DeyvissonSnuffs)
 
 ### Muito obrigado a todos!
 
 <h2 align="center">👋 Adeus</h2>
-<p align="center" ><img alt="Adeus" src="https://images.vexels.com/media/users/3/158561/isolated/lists/cfecaee52b2a66a7ec9eb0fdb342ec39-autocolante-de-adeus.png"></p>
+<p align="center" ><img alt="Adeus" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/feedback.gif"></p>
