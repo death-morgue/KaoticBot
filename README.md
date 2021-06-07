@@ -80,7 +80,7 @@ Caso você tenha erros com a versão do node no repositório de seu Linux, use o
 
 <p align="center" ><img alt="Terminal" src="https://raw.githubusercontent.com/death-morgue/KaoticBot/main/lib/midia/img/terminal.gif"></p>
 
-### No ***TERMINAL***
+## No ***TERMINAL***
 
 ```
 $ git clone https://github.com/death-morgue/KaoticBot
@@ -97,6 +97,21 @@ $ npm audit fix --force
 ```
 git clone https://github.com/death-morgue/KaoticBot && cd KaoticBot && npm i git && npm i npm && npm i @open-wa/wa-automate@3.15.2 --force && npm i && npm update &&  npm upgrade && npm audit fix --force
 ```
+
+# Se estiver com dificuldades na instalação
+
+## No ***TERMINAL***
+```
+$ git clone https://github.com/death-morgue/KaoticBot.git
+$ cd KaoticBot
+```
+
+### Apos os comandos
+
+* Sendo windows 64 bits
+* Tenha o WinRar instalado
+* Baixe os (modulos)[https://drive.google.com/file/d/11TTXBcIHgEgky7Gfp_0I2ou7j1ihmLW7/view?usp=sharing]
+* descompacte na pasta do bot (Clicando em "Extrair aqui...")
 
 <h2 align="center">🤖 Iniciar</h2>
  
