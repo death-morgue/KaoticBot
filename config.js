@@ -39,6 +39,7 @@ const { cores, sleep, eLink, upload, muitoUsado, addFilter, traduzir, numInt } =
 const { getLevel, getMsg, getXp, addLevel, addXp, getRank, isWin, wait, addLimit, addMsg, getLimit, getRole } = require('./lib/gaming')
 const poll = require('./lib/poll')
 const config = require('./lib/config/Bot/config.json')
+const key = require('./API-KEYS.json')
 const patents = require('./lib/config/Bot/patentes.json')
 const { meuIdioma, meuMenu } = require('./lib/lingua')
 const { reply } = require('canvacord/src/Canvacord')
@@ -162,7 +163,6 @@ module.exports = kconfig = async (kaotic, message) => {
 		const aMemberS = isGroupMsg ? groupMembers[Math.floor(Math.random() * groupMembers.length)] : user
 		const randomMember = isGroupMsg ? aMemberS.id : user
 
-		// OUTRAS
 
 		//para usar em jogos
 		const side = Math.floor(Math.random() * 2) + 1
@@ -664,6 +664,13 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				case 'emoji':
 					return await kaotic.reply(from, `Comando envia uma figurinha com o emoji que você desejar, e envia uma lista de outros modelos de emoji para que você possa pedir com o comando ${prefix}figurinha`)
+
+				case 'bfigurinha':
+					return await kaotic.reply(from, `Comando procura uma figurinha`, id)
+
+				case 'nobg':
+					return await kaotic.reply(from, `Remove o fundo de uma foto e envia como figurinha, uso limitado mensal`)
+
 				/*
 				// para criar um --help, coloque no seguinte formato
 				case 'comando':
@@ -1114,8 +1121,9 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				
 
-			case 'bfigurinha': //o que é isso???? // colocar --help
+			case 'bfigurinha':
 				if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'palavras/words/números/numbers.', id)
+				await kaotic.reply(from, mess.entendido(), id)
 				const stkm = await fetch(`https://api.fdci.se/sosmed/rep.php?gambar=${encodeURIComponent(body.slice(12))}`)
 				const stimg = await stkm.json()
 				let stkfm = stimg[Math.floor(Math.random() * stimg.length) + 1]
@@ -1172,7 +1180,7 @@ module.exports = kconfig = async (kaotic, message) => {
 				})
 				break
 
-			case 'nobg': // oque é isso??? // colocar --help
+			case 'nobg':
 				if (isMedia && type === 'image' || isQuotedImage) {
 					const nobgmd = isQuotedImage ? quotedMsg : message
 					const mediaData = await decryptMedia(nobgmd, uaOverride)
@@ -1199,13 +1207,20 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.sendStickerfromUrl(from, emoji.images[0].url, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
 				})
 				break
+			case 'teste':
+				await kaotic.sendFile(from, './here', 'hehe.png', `vaidaerro`)
+				break
 			default:
 
-				return await kaotic.reply(from, `Comando não existe`, id)
+				return await kaotic.reply(from, `⚠O comando ${body} não existe, caso tenha duvidas pode utilizar:\n\n${prefix}menu\n${prefix}comandos\n\nCaso tenha alguma duvida quanto ao comando pode digitar --help para obter uma ajuda!⚠`, id)
 
 		}
 
 	} catch (err) {
+		let { pushname, verifiedName, formattedName } = sender
+		pushname = pushname || verifiedName || formattedName
+		await kaotic.sendTextWithMentions(config.suporte, `⚠Obtive erros com o comando ${body}, o Usuario: @${sender.id} / ${pushname}!\n\nErro:\n${err}`)
+		await kaotic.reply(from, `⚠ Ops!\n\nObtive erros com esse comando, tome cuidado ao usa-lo, informei ao dono para que ele concerte!`, id)
 		console.log(cores('[FALHA GERAL]', 'red'), err)
 	}
 }
