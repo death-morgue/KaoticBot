@@ -110,7 +110,7 @@ $ cd KaoticBot
 
 * Sendo windows 64 bits
 * Tenha o WinRar instalado
-* Baixe os (modulos)[https://drive.google.com/file/d/11TTXBcIHgEgky7Gfp_0I2ou7j1ihmLW7/view?usp=sharing]
+* Baixe os [modulos](https://drive.google.com/file/d/11TTXBcIHgEgky7Gfp_0I2ou7j1ihmLW7/view?usp=sharing)
 * descompacte na pasta do bot (Clicando em "Extrair aqui...")
 
 <h2 align="center">🤖 Iniciar</h2>
