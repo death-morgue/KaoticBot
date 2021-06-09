@@ -95,6 +95,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		var daily = JSON.parse(fs.readFileSync('./lib/config/Bot/diario.json'))
 		const { name, formattedTitle } = chat
 		let { pushname, verifiedName, formattedName } = sender
+		
 		pushname = pushname || verifiedName || formattedName
 
 		//infos do bot
@@ -607,7 +608,6 @@ module.exports = kconfig = async (kaotic, message) => {
 
 				case 'sticker':
 				case 'fig':
-				case 'figurinha':
 				case 'stiker':
 				case 'f':
 				case 's':
@@ -671,6 +671,10 @@ module.exports = kconfig = async (kaotic, message) => {
 				case 'nobg':
 					return await kaotic.reply(from, `Remove o fundo de uma foto e envia como figurinha, uso limitado mensal`)
 
+					case 'roubar':
+						return await kaotic.reply(from, `coloca na descrição da figurinha ex: \n marque uma figuruinha coloque /roubar roubei | kaotic`)
+	
+				
 				/*
 				// para criar um --help, coloque no seguinte formato
 				case 'comando':
@@ -840,7 +844,6 @@ module.exports = kconfig = async (kaotic, message) => {
 				}
 				else return await kaotic.reply(from, mess.onOff(pushname, 'rank'), id)
 				break
-
 			//liga e desliga as saudações
 			case 'boasvindas':
 			case 'welcome':
@@ -889,10 +892,12 @@ module.exports = kconfig = async (kaotic, message) => {
 				break
 
 			case 'menu'://menu primario
+			
+		//numero de mensagens
+				const pvativo = await kaotic.getAllChatIds()
+				const gpativo = await kaotic.getAllGroups()
 
-				//numero de mensagens
 				const theMsg = await getMsg(user, msgcount)
-
 				//xp
 				const uzrXp = await getXp(user, nivel)
 
@@ -906,14 +911,13 @@ module.exports = kconfig = async (kaotic, message) => {
 				const mping = processTime(t, moment())
 
 				//envia o menu com as informações
-				if (side == 1) {
-					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', menus.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
-				}
-				else {
-					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', menus.menu2(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
-				}
+					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', menus.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente, pvativo, gpativo))
 				break
 
+			case 'Figurinhas':
+				await kaotic.sendText(from, mess.Figurinhas())
+				break
+						
 			case 'comandos':
 			case 'comando'://todos os comandos
 				await kaotic.sendText(from, menus.comandos())
@@ -991,7 +995,6 @@ module.exports = kconfig = async (kaotic, message) => {
 
 			case 'sticker':
 			case 'fig':
-			case 'figurinha':
 			case 'stiker':
 			case 'f':
 			case 's':
@@ -1207,6 +1210,93 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.sendStickerfromUrl(from, emoji.images[0].url, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
 				})
 				break
+
+				case 'roubar':
+					if (quotedMsg && quotedMsg.type == 'sticker' && arks.includes('|')) {
+						await kaotic.reply(from, mess.wait(), id)
+						const stickerMeta = await decryptMedia(quotedMsg)
+						const packName = arg.split('|')[0]
+						const authorName = arg.split('|')[1]
+						await kaotic.sendImageAsSticker(from, `data:${quotedMsg.mimetype};base64,${stickerMeta.toString('base64')}`, { author: authorName, pack: packName })
+					} else return await kaotic.reply(from, mess.nofigu() + '\n\n' + mess.argsbar() + 'use 1 "|".', id)
+					break
+
+               case 'demote':;case 'demitir':
+			if (isGroupMsg && isGroupAdmins || isGroupMsg && isOwner) {
+				if (!isBotGroupAdmins) return await kaotic.reply(from, mess.botademin(), id)
+				if (quotedMsg) {
+					const demquo = quotedMsgObj.sender.id
+					if (!groupAdmins.includes(demquo)) return await kaotic.reply(from, mess.notadm, id)
+					await kaotic.sendTextWithMentions(from, mess.demitir(demquo))
+					await kaotic.demoteParticipant(groupId, demquo)
+				} else {
+					if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar(), id)
+					await kaotic.sendTextWithMentions(from, mess.demitir(mentionedJidList))
+					var isNaM = ''
+					for (let i = 0; i < mentionedJidList.length; i++) {
+						if (!groupAdmins.includes(mentionedJidList[i])) isNaM += `@${mentionedJidList[i].replace('@c.us', '')} `
+						await kaotic.demoteParticipant(groupId, mentionedJidList[i])
+					}
+					if (isNaM !== '') {
+						isNaM += `\n\n${mess.notadm()}`
+						await kaotic.sendTextWithMentions(from, isNaM, id)
+					}
+				}
+			} else if (isGroupMsg) {
+				await kaotic.reply(from, mess.soAdm(), id)
+			} else return await kaotic.reply(from, mess.soGrupo(), id)
+            break
+
+			case 'promote':;case 'promover':
+				if (isGroupMsg && isGroupAdmins || isGroupMsg && isOwner) {
+					if (!isBotGroupAdmins) return await kaotic.reply(from, mess.botademira(), id)
+					if (quotedMsg) {
+						const proquo = quotedMsgObj.sender.id
+						if (groupAdmins.includes(proquo)) return await kaotic.reply(from, mess.isadm(), id)
+						await kaotic.sendTextWithMentions(from, mess.promote(proquo))
+						await kaotic.promoteParticipant(groupId, proquo)
+					} else {
+						if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar(), id)
+						await kaotic.sendTextWithMentions(from, mess.promote(mentionedJidList))
+						var isPromo = ''
+						for (let i = 0; i < mentionedJidList.length; i++) {
+							if (groupAdmins.includes(mentionedJidList[i])) isPromo += `@${mentionedJidList[i].replace('@c.us', '')} `
+							await kaotic.promoteParticipant(groupId, mentionedJidList[i])
+						}
+						if (isPromo !== '') {
+							isPromo += `\n\n${mess.isadm()}`
+							await kaotic.sendTextWithMentions(from, isPromo, id)
+						}
+					}
+				} else if (isGroupMsg) {
+					await kaotic.reply(from, mess.soAdm(), id)
+				} else return await kaotic.reply(from, mess.soGrupo(), id)
+				break
+	
+				case 'ping':
+					const rTime = (seconds) => {
+						const pad = (s) => { return (s < 10 ? '0' : '') + s }
+						var hours = Math.floor(seconds / (60*60)); var minutes = Math.floor(seconds % (60*60) / 60); var seconds = Math.floor(seconds % 60)
+						return `${pad(hours)} horas | ${pad(minutes)} minutos | ${pad(seconds)} segundos - HH:MM:SS`
+					}
+					const osUptime = () => {
+						var up_sec = os.uptime(); var up_min = up_sec / 60; var up_hour = up_min / 60; up_sec = Math.floor(up_sec); up_min = Math.floor(up_min); up_hour = Math.floor(up_hour); up_hour = up_hour % 60; up_min = up_min % 60; up_sec = up_sec % 60
+						return `${up_hour} horas | ${up_min} minutos | ${up_sec} segundos - HH:MM:SS`
+					}
+					const ramMemory = () => {
+						var allRam = os.totalmem(); var kbRam = allRam/1024; var mbRam = kbRam/1024; var gbRam = mbRam/1024; kbRam = Math.floor(kbRam); mbRam = Math.floor(mbRam); gbRam = Math.floor(gbRam); mbRam = mbRam%1024; kbRam = kbRam%1024; allRam = allRam%1024;
+						return `${gbRam}GB | ${mbRam}MB | ${kbRam}KB | ${allRam} Bytes`
+					}
+					const timeBot = rTime(process.uptime())
+					const loadedMsg = await kaotic.getAmountOfLoadedMessages()
+					const chatIds = await kaotic.getAllChatIds()
+					const groups = await kaotic.getAllGroups()
+					const zapVer = await kaotic.getWAVersion()
+					const botBat = await kaotic.getBatteryLevel()
+					const isEnergy = await kaotic.getIsPlugged()
+					await kaotic.sendText(from, mess.info(timeBot, osUptime, ramMemory, os, loadedMsg, groups, chatIds, processTime, t, moment, zapVer, botBat, isEnergy))
+					break
+						
 			case 'teste':
 				await kaotic.sendFile(from, './here', 'hehe.png', `vaidaerro`)
 				break
