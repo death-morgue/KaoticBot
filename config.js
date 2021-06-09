@@ -1222,8 +1222,8 @@ module.exports = kconfig = async (kaotic, message) => {
 					break
 
                case 'demote':;case 'demitir':
-			if (isGroupMsg && isGroupAdmins || isGroupMsg && isOwner) {
-				if (!isBotGroupAdmins) return await kaotic.reply(from, mess.botademin(), id)
+			if (isGroupMsg && eAdm || isGroupMsg && isOwner) {
+				if (!botAdm) return await kaotic.reply(from, mess.botademin(), id)
 				if (quotedMsg) {
 					const demquo = quotedMsgObj.sender.id
 					if (!groupAdmins.includes(demquo)) return await kaotic.reply(from, mess.notadm, id)
@@ -1248,29 +1248,29 @@ module.exports = kconfig = async (kaotic, message) => {
             break
 
 			case 'promote':;case 'promover':
-				if (isGroupMsg && isGroupAdmins || isGroupMsg && isOwner) {
-					if (!isBotGroupAdmins) return await kaotic.reply(from, mess.botademira(), id)
+					if (isGroupMsg && eAdm || isGroupMsg && isOwner) {
+					if (!botAdm) return await kaotic.reply(from, mess.botademira(), id)
 					if (quotedMsg) {
-						const proquo = quotedMsgObj.sender.id
-						if (groupAdmins.includes(proquo)) return await kaotic.reply(from, mess.isadm(), id)
-						await kaotic.sendTextWithMentions(from, mess.promote(proquo))
-						await kaotic.promoteParticipant(groupId, proquo)
+					const proquo = quotedMsgObj.sender.id
+					if (eAdm.includes(proquo)) return await kaotic.reply(from, mess.isadm(), id)
+					await kaotic.sendTextWithMentions(from, mess.promote(proquo))
+					await kaotic.promoteParticipant(groupId, proquo)
 					} else {
-						if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar(), id)
-						await kaotic.sendTextWithMentions(from, mess.promote(mentionedJidList))
-						var isPromo = ''
-						for (let i = 0; i < mentionedJidList.length; i++) {
-							if (groupAdmins.includes(mentionedJidList[i])) isPromo += `@${mentionedJidList[i].replace('@c.us', '')} `
-							await kaotic.promoteParticipant(groupId, mentionedJidList[i])
+					if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar(), id)
+					await kaotic.sendTextWithMentions(from, mess.promover(mentionedJidList))
+					var isPromo = ''
+					for (let i = 0; i < mentionedJidList.length; i++) {
+					if (eAdm.includes(mentionedJidList[i])) isPromo += `@${mentionedJidList[i].replace('@c.us', '')} `
+					await kaotic.promoteParticipant(groupId, mentionedJidList[i])
 						}
-						if (isPromo !== '') {
-							isPromo += `\n\n${mess.isadm()}`
-							await kaotic.sendTextWithMentions(from, isPromo, id)
+					if (isPromo !== '') {
+						isPromo += `\n\n${mess.isadm()}`
+					await kaotic.sendTextWithMentions(from, isPromo, id)
 						}
 					}
-				} else if (isGroupMsg) {
+					} else if (isGroupMsg) {
 					await kaotic.reply(from, mess.soAdm(), id)
-				} else return await kaotic.reply(from, mess.soGrupo(), id)
+					} else return await kaotic.reply(from, mess.soGrupo(), id)
 				break
 	
 				case 'ping':
