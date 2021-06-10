@@ -293,7 +293,8 @@ module.exports = kconfig = async (kaotic, message) => {
 
 			} catch (error) { return oneImage = 0 }
 		}
-
+		if( body.includes('carro')) return await kaotic.reply(from, `teste`,id)
+		
 		// Auto-stickers de fotos
 		if (isGroupMsg &&
 			autoSticker &&
