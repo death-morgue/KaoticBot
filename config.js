@@ -39,11 +39,11 @@ const { cores, sleep, eLink, upload, muitoUsado, addFilter, traduzir, numInt } =
 const { getLevel, getMsg, getXp, addLevel, addXp, getRank, isWin, wait, addLimit, addMsg, getLimit, getRole } = require('./lib/gaming')
 const poll = require('./lib/poll')
 const config = require('./lib/config/Bot/config.json')
+const key = require('./API-KEYS.json')
 const patents = require('./lib/config/Bot/patentes.json')
-const { meuIdioma } = require('./lib/lingua')
+const { meuIdioma, meuMenu } = require('./lib/lingua')
 const { reply } = require('canvacord/src/Canvacord')
 const { owner, baninjusto } = require('./lib/lingua/pt')
-const { color } = require('../Kaotic/lib/functions')
 const options = { headless: true, userDataDir: "./logs/Chrome/Maker", args: ['--aggressive-cache-discard', '--disable-application-cache', '--disable-cache', '--disable-offline-load-stale-cache', '--disable-setuid-sandbox', '--disk-cache-size=0', '--ignore-certificate-errors', '--no-sandbox', '--single-process'] }
 // Leia a options.js para maiores detalhes
 
@@ -54,8 +54,9 @@ const region = config.lang
 /*const aki = new Aki(region)
 const akinit = async () => { try { await aki.start() } catch (error) { console.log(cores('[AKI]', 'crimson'), cores(`→ Obtive erros ao iniciar o akinator → ${error.message}.`, 'gold')) } }
 akinit()*/
-const cd = Number(config.timePlay * 60000) // * 60000 - Transforma o valor do tempo de aposta em minutos
+const cd = Number(config.tempoJogo * 60000) // * 60000 - Transforma o valor do tempo de aposta em minutos
 const mess = meuIdioma()
+const menus = meuMenu()
 moment.tz.setDefault('America/Sao_Paulo').locale('pt_BR')
 const emoji = new EmojiAPI();
 var jogadas = 0; var isMuteAll = 0; var oneImage = 0; var oneLink = 0; var oneTrava = 0
@@ -94,6 +95,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		var daily = JSON.parse(fs.readFileSync('./lib/config/Bot/diario.json'))
 		const { name, formattedTitle } = chat
 		let { pushname, verifiedName, formattedName } = sender
+		
 		pushname = pushname || verifiedName || formattedName
 
 		//infos do bot
@@ -117,7 +119,7 @@ module.exports = kconfig = async (kaotic, message) => {
 		const autoSticker = isGroupMsg ? atstk.includes(groupId) : false
 		const isOwner = ownerNumber.includes(user)
 
-		
+
 		//tempo
 		const time = moment(t * 1000).format('DD/MM HH:mm:ss')
 		const processTime = (timestamp, now) => { return moment.duration(now - moment(timestamp * 1000)).asSeconds() }
@@ -162,13 +164,13 @@ module.exports = kconfig = async (kaotic, message) => {
 		const aMemberS = isGroupMsg ? groupMembers[Math.floor(Math.random() * groupMembers.length)] : user
 		const randomMember = isGroupMsg ? aMemberS.id : user
 
-		// OUTRAS
 
 		//para usar em jogos
 		const side = Math.floor(Math.random() * 2) + 1
 		const lvpc = Math.floor(Math.random() * 100) + 1
 		const lvrq = 100 - lvpc
 		const milSort = Math.floor(Math.random() * 1000) + 1
+		const sorteio250 = math.floor(math.random() * 250) + 1
 
 		//votação
 		global.pollfile = 'poll_Config_' + groupId + '.json'
@@ -291,7 +293,8 @@ module.exports = kconfig = async (kaotic, message) => {
 
 			} catch (error) { return oneImage = 0 }
 		}
-
+		if( body.includes('carro')) return await kaotic.reply(from, `teste`,id)
+		
 		// Auto-stickers de fotos
 		if (isGroupMsg &&
 			autoSticker &&
@@ -578,62 +581,53 @@ module.exports = kconfig = async (kaotic, message) => {
 
 			switch (command) {
 				case 'grupo':
-
 					return await kaotic.reply(from, `Comando usado para abrir e fechar o grupo\n\non: fecha\noff:abre`, id)
 
 
 				case 'rank':
-
 					return await kaotic.reply(from, `Comando feito para ligar as funções de xp e jogos no grupo,\n\npara ativar digite ${prefix}rank on\npara desativar digite ${prefix}rank off`, id)
 
 				case 'boasvindas':
 				case 'welcome':
 				case 'saudacoes':
-
 					return await kaotic.reply(from, `Comando feito para ligar e desligar as saudações no grupo,\n\npara ligar difite ${prefix}welcome on\npara desativar digite ${prefix}welcome off`, id)
 
 
 				case 'menu':
-
 					return await kaotic.reply(from, `Envia menu de comandos primario`, id)
 
 				case 'comandos':
 				case 'comando':
-
 					return await kaotic.reply(from, `envia todos os comandos do bot`, id)
 
 
 				case 'img':
-
 					return await kaotic.reply(from, `transforma  figurinhas em imagens`, id)
 
+				case 'emoji':
+					return await kaotic.reply(from, `transforma  emoji em figurinha\nEx: ${prefix}emoji 😍 `, id)
 
 				case 'sticker':
 				case 'fig':
-				case 'figurinha':
 				case 'stiker':
 				case 'f':
 				case 's':
-
-					return await kaotic.reply(from, `envia uma foto, marcada ou comentada, como uma figurinha`, id)
+					return await kaotic.reply(from, `Transforma, fotos marcadas ou legendadas, ou links de imagens em uma figurinha`, id)
 
 
 				case 'stickergif':
 				case 'gif':
 				case 'g':
 				case 'gifsticker':
-
 					return await kaotic.reply(from, `Marque ou responda um video ou gif, para transformalo em figurinha animada`, id)
 
 
 				case 'license':
 				case 'licenca':
 				case 'licença':
-				 
 					return await kaotic.reply(from, `Esse BOT é lincenciado pelo MIT(Massachusetts Institute of Technology), digite ${prefix}licença para ver`, id)
 
 				case 'softban':
-
 					return await kaotic.reply(from, `Comando feito para dar ban temporario em alguem, basta marcar e colocar o tempo em minutos.`)
 
 				case 'kick':
@@ -642,25 +636,53 @@ module.exports = kconfig = async (kaotic, message) => {
 				case 'k':
 				case 'b':
 				case 'banir':
-					
-					return await kaotic.reply(from, `Comando usado para banir os arroaceiros do grupo!`,id)
-				
-				case 'banirpor':
-				case 'softban':
-				case 'bantempo':
-			
+					return await kaotic.reply(from, `Comando usado para banir os arroaceiros do grupo!`, id)
+
+				case 'banirpor': ; case 'softban': ; case 'bantempo':
 					return await kaotic.reply(from, `Bani a pessoa por um determinado tempo ex \n ${prefix}banirpor @Deyvisson 10 \nou marca / cita mensagen${prefix}banirpor 10\n em dez minutos colocarei novamente`, id)
-			
+
 				case 'attp':
 					return await kaotic.reply(from, `cria uma figurinha com palavras`, id)
 
+				case 'gps':
+					return await kaotic.reply(from, `Grupos oficiais do Kaotic`, id)
+
+				case 'gp':
+					return await kaotic.reply(from, `Comando usado para enviar link dos grupos oficiais`, id)
+
+				case 'grupos':
+					return await kaotic.reply(from, `Comando usado para enviar a Id's de todos os grupos`, id)
+
+				case 'links':
+					return await kaotic.reply(from, `Comando feito para dono, para pegar o link de todos os grupos que o Kaotic se encontra`)
+
+				case 'roleta':
+				case 'aposta':
+					return await kaotic.reply(from, `Comando feito para realizar apostas de Xp.`, id)
+
+				case 'attp':
+					return await kaotic.reply(from, `Comando faz uma figurinha com o texto digitado piscando, Ex:\n\n${prefix}attp Mensagem`, id)
+
+				case 'emoji':
+					return await kaotic.reply(from, `Comando envia uma figurinha com o emoji que você desejar, e envia uma lista de outros modelos de emoji para que você possa pedir com o comando ${prefix}figurinha`)
+
+				case 'bfigurinha':
+					return await kaotic.reply(from, `Comando procura uma figurinha`, id)
+
+				case 'nobg':
+					return await kaotic.reply(from, `Remove o fundo de uma foto e envia como figurinha, uso limitado mensal`)
+
+					case 'roubar':
+						return await kaotic.reply(from, `coloca na descrição da figurinha ex: \n marque uma figuruinha coloque /roubar roubei | kaotic`)
+	
+				
 				/*
-					// para criar um --help, coloque no seguinte formato
-					case 'comando':
+				// para criar um --help, coloque no seguinte formato
+				case 'comando':
 
-						return await kaotic.reply(from, `sua explicação do comando`)
+					return await kaotic.reply(from, `sua explicação do comando`)
 
-				*/
+			*/
 
 				default:
 
@@ -687,17 +709,17 @@ module.exports = kconfig = async (kaotic, message) => {
 					kaotic.reply(from, mess.onOff(pushname, 'grupo'), id)
 				}
 				break
-			
+
 			case 'banirpor':
 			case 'softban':
 			case 'bantempo':
-		
+
 				try {
 					if (isGroupMsg && eAdm || isGroupMsg && eDono) {
 						if (!eAdm) return await kaotic.reply(from, mess.soGrupo(), id)
 						const aatimep = Number(args[0]) * 60000
 						const timeaddmsg = Number(aatimep) + 10000
-						
+
 						if (quotedMsg) {
 							if (args.length == 0 || isNaN(args[0])) return await kaotic.reply(from, mess.nomark() + ' + time/tempo (minutos/minutes)\n(Ex: 30)', id)
 							const bgmcomum = quotedMsgObj.sender.id
@@ -715,9 +737,10 @@ module.exports = kconfig = async (kaotic, message) => {
 							await kaotic.reply(from, mess.timeadd(), id)
 							await kaotic.addParticipant(groupId, bgmcomum)
 							await sleep(timeaddmsg)
-							await kaotic.sendText(from, mess.voltargp())} 
-							
-							else {
+							await kaotic.sendText(from, mess.voltargp())
+						}
+
+						else {
 							if (args.length == 0 || isNaN(args[1]) || mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar() + '\n\n@user time/tempo (minutos/minutes)\n(Ex: @user 30)', id)
 							if (!groupMembersId.includes(mentionedJidList[0])) return await kaotic.reply(from, mess.notongp(), id)
 							await kaotic.sendTextWithMentions(from, mess.irritouml(mentionedJidList, args))
@@ -735,54 +758,54 @@ module.exports = kconfig = async (kaotic, message) => {
 					} else if (isGroupMsg) {
 						await kaotic.reply(from, mess.soademiro(), id)
 					} else return await kaotic.reply(from, mess.sogrupo(), id)
-				} catch (error) { 
+				} catch (error) {
 					await kaotic.reply(from, mess.addpessoa(), id)
-					console.log(color('[SOFTBAN]', 'crimson'), color(`→ Obtive erros no comando ${prefix}${command} → ${error.message} - Você pode ignorar.`, 'gold'))
+					console.log(cores('[SOFTBAN]', 'crimson'), cores(`→ Obtive erros no comando ${prefix}${command} → ${error.message} - Você pode ignorar.`, 'gold'))
 
 				}
 				break
-				
+
 			case 'kick':
 			case 'k':
 			case 'ban':
 			case 'k':
 			case 'b':
 
-			if (isGroupMsg && eAdm || 
-				isGroupMsg && eDono) {
+				if (isGroupMsg && eAdm ||
+					isGroupMsg && eDono) {
 
-				if (!botAdm) return await kaotic.reply(from, mess.botAdm(name, chat.groupMetadata.owner.replace('@c.us', '')), id)
-				if (quotedMsg) {
+					if (!botAdm) return await kaotic.reply(from, mess.botAdm(name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+					if (quotedMsg) {
 
-					const negquo = quotedMsgObj.sender.id
+						const negquo = quotedMsgObj.sender.id
 
-					if (ownerNumber.includes(negquo)) return await kaotic.reply(from, mess.vip(), id)
-					if (groupAdmins.includes(negquo)) return await kaotic.reply(from, mess.removeradm(), id)
-					if (!groupMembersId.includes(negquo)) return await kaotic.reply(from, mess.notongp(), id)
+						if (ownerNumber.includes(negquo)) return await kaotic.reply(from, mess.vip(), id)
+						if (groupAdmins.includes(negquo)) return await kaotic.reply(from, mess.removeradm(), id)
+						if (!groupMembersId.includes(negquo)) return await kaotic.reply(from, mess.notongp(), id)
 
-					await kaotic.sendTextWithMentions(from, mess.ban(negquo))
-					await kaotic.removeParticipant(groupId, negquo)
+						await kaotic.sendTextWithMentions(from, mess.ban(negquo))
+						await kaotic.removeParticipant(groupId, negquo)
 
-				} else {
+					} else {
 
-					if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semMarcar(pushname), id)
-					await kaotic.sendTextWithMentions(from, mess.kick(mentionedJidList))
+						if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semMarcar(pushname), id)
+						await kaotic.sendTextWithMentions(from, mess.kick(mentionedJidList))
 
-					for (let i = 0; i < mentionedJidList.length; i++) {
+						for (let i = 0; i < mentionedJidList.length; i++) {
 
-						if (ownerNumber.includes(mentionedJidList[i])) return await kaotic.reply(from, mess.vip(), id)
-						if (groupAdmins.includes(mentionedJidList[i])) return await kaotic.reply(from, mess.removeradm(), id)
-						
-						await kaotic.removeParticipant(groupId, mentionedJidList[i])
+							if (ownerNumber.includes(mentionedJidList[i])) return await kaotic.reply(from, mess.vip(), id)
+							if (groupAdmins.includes(mentionedJidList[i])) return await kaotic.reply(from, mess.removeradm(), id)
 
+							await kaotic.removeParticipant(groupId, mentionedJidList[i])
+
+						}
 					}
-				}
-			} else if (isGroupMsg) {
+				} else if (isGroupMsg) {
 
-				await kaotic.reply(from, mess.soAdm(pushname), id)
-			} else return await kaotic.reply(from, mess.soGrupo(pushname), id)
+					await kaotic.reply(from, mess.soAdm(pushname), id)
+				} else return await kaotic.reply(from, mess.soGrupo(pushname), id)
 
-            break
+				break
 
 
 			case 'rank': //liga e desliga o rank nos grupos
@@ -822,7 +845,6 @@ module.exports = kconfig = async (kaotic, message) => {
 				}
 				else return await kaotic.reply(from, mess.onOff(pushname, 'rank'), id)
 				break
-
 			//liga e desliga as saudações
 			case 'boasvindas':
 			case 'welcome':
@@ -871,10 +893,12 @@ module.exports = kconfig = async (kaotic, message) => {
 				break
 
 			case 'menu'://menu primario
+			
+		//numero de mensagens
+				const pvativo = await kaotic.getAllChatIds()
+				const gpativo = await kaotic.getAllGroups()
 
-				//numero de mensagens
 				const theMsg = await getMsg(user, msgcount)
-
 				//xp
 				const uzrXp = await getXp(user, nivel)
 
@@ -888,17 +912,70 @@ module.exports = kconfig = async (kaotic, message) => {
 				const mping = processTime(t, moment())
 
 				//envia o menu com as informações
-				if(side == 1){
-				await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', mess.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
-				}
-				else{
-					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', mess.menu2(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente))
-				}
+					await kaotic.sendFile(from, './lib/midia/img/kaotic.jpg', 'kaoticbot.jpg', menus.menu(pushname, time, theMsg, uzrXp, uneedxp, uzrlvl, mping, patente, pvativo, gpativo))
 				break
 
+			case 'Figurinhas':
+				await kaotic.sendText(from, mess.Figurinhas())
+				break
+						
 			case 'comandos':
 			case 'comando'://todos os comandos
-				await kaotic.sendText(from, mess.comandos())
+				await kaotic.sendText(from, menus.comandos())
+				break
+
+			case 'grupos':
+
+				const todosGrupos = await kaotic.getAllGroups()
+				let msg = ''
+				for (let ids of todosGrupos) {
+					msg += `⇒ *${ids.contact.name}*\n id = ${ids.contact.id.replace(/@g.us/g, '')}\n\n`
+				}
+				await kaotic.reply(from, msg, id)
+
+				break
+
+			case 'links':
+				if (!eDono) return await reply(from, mess.soDono(pushname, config.nomeDono1, config.nomeDono2), id)
+				if (isGroupMsg && args[0] !== '-f') return await kaotic.reply(from, mess.soPv(pushname), id)
+				const allGrupos = await kaotic.getAllGroups()
+				for (let ids of allGrupos) {
+					const adms = await kaotic.getGroupAdmins('' + ids.contact.id)
+					if (adms.includes(botNumber + '@c.us')){
+						kaotic.getGroupInviteLink('' + ids.contact.id).then((a) => kaotic.sendLinkWithAutoPreview(from, a, `\n => ${ids.contact.name}`))
+					}
+				}
+				await sleep(3000)
+				await kaotic.reply(from, mess.pronto(pushname), id)
+					break
+
+			case 'gps':
+				await kaotic.sendText(from, menus.gps())
+				break
+
+			case 'gp': // by luix
+				var grupoMsgCliente = '0'
+				try {
+					grupoMsgCliente = args[0]
+				} catch (erro) {
+					kaotic.reply(from, `Qual o grupo deseja o link?\n\nCaso tenha duvida digite ${prefix}gps.`, id)
+				}
+				switch (grupoMsgCliente) {
+					case '1':
+						kaotic.getGroupInviteLink('557588737769-1620501506@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a, `\n\nGrupo oficial do Kaotic Bot`))
+						break
+					case '2':
+						kaotic.getGroupInviteLink('557588737769-1553711859@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a))
+						break
+					case '3':
+						kaotic.getGroupInviteLink('553199949012-1601559160@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a))
+						break
+					case '4':
+						kaotic.getGroupInviteLink('557588737769-1559309169@g.us').then((a) => kaotic.sendLinkWithAutoPreview(from, a))
+						break
+					default:
+						kaotic.reply(from, `Qual o grupo deseja o link?\n\nCaso tenha duvida digite ${prefix}gps.`, id)
+				}
 				break
 
 			case 'img'://transoforma stickers em imagens
@@ -919,7 +996,6 @@ module.exports = kconfig = async (kaotic, message) => {
 
 			case 'sticker':
 			case 'fig':
-			case 'figurinha':
 			case 'stiker':
 			case 'f':
 			case 's':
@@ -994,62 +1070,71 @@ module.exports = kconfig = async (kaotic, message) => {
 				} else return await kaotic.reply(from, mess.figurinha(), id)
 
 				break
-												
-					/*case 'rolette':
-					case 'roleta':
-						const checkxpr = await getXp(user, nivel)
-						const xpMenorT = parseInt(checkxpr / 2, 10)
-						if (isNaN(args[0]) || !numInt(args[0]) || Number(args[0]) >= xpMenorT || Number(args[0]) < 250) return await kaotic.reply(from, mess.praposta(checkxpr, xpMenorT), id)
-						var nrolxp = Math.floor(Math.random() * -milSort) - Number(args[0])
-						var prolxp = Math.floor(Math.random() * milSort) + Number(args[0])
-						const limitrl = await getLimit(user, daily)
-						if (limitrl !== undefined && cd - (Date.now() - limitrl) > 0) {
-							const time = ms(cd - (Date.now() - limitrl))
-							await kaotic.reply(from, mess.limitejogo(), id)
+
+		
+			case 'roleta':
+			case 'aposta':
+
+				//grupos permitindo jogos
+				if (!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
+				if (!xp.includes(groupId)) return await kaotic.sendTextWithMentions(from, mess.xpGrupo(pushname, name, chat.groupMetadata.owner.replace('@c.us', '')), id)
+
+
+				//verifica se apostou
+				if (body.length < 9) return kaotic.reply(from, mess.numeros(pushname), id)
+				
+				await sleep(500)
+
+				//valores de xp e xpmaximo
+				const xpPessoa = await getXp(user, nivel)
+				const xpMaximo = Number(xpPessoa / 2, 10)
+
+					//verifica se apostou numero
+					if (isNaN(args[0]) || !numInt(args[0]) || args[0] == undefined || Number(args[0]) < 250 || Number(args[0]) > xpMaximo) return await kaotic.reply(from, mess.praposta(xpPessoa, xpMaximo), id)
+
+					//valores caso ganhe ou perde
+					var xpGanhou = math.floor(math.random() * sorteio250) + Number(args[0])
+					var xpPerdeu = math.floor(math.random() * -sorteio250) - Number(args[0])
+
+					//limite de jogos
+					const limitrl = await getLimit(user, daily)
+					if (limitrl !== undefined && cd - (Date.now() - limitrl) > 0) {
+						const time = ms(cd - (Date.now() - limitrl))
+						await kaotic.reply(from, mess.limitejogo(), id)
+					} else {
+						//ganha
+						if (side == 1) {
+
+							await kaotic.sendFile(from, './lib/midia/img/win.jpg', 'venceu.jpg', mess.ganho(xpGanhou))
+							await sleep(1000)
+							await addXp(user, xpGanhou, nivel)
+
+							//perde
 						} else {
-							if (side == 1) {
-								await kaotic.sendFile(from, './lib/midia/img/perdeu.png', 'rol1.png', mess.perde(nrolxp), id)
-								await sleep(2000)
-								await addXp(user, nrolxp, nivel)
-							} else if (side == 2) {
-								await kaotic.sendFile(from, './lib/midia/img/win.jpg', 'rol.jpg', mess.ganho(prolxp), id)
-								await sleep(2000)
-								await addXp(user, prolxp, nivel)
-							}
-							await addLimit(user, daily) // remova para tirar o limite dos jogos
+
+
+							await kaotic.sendFile(from, './lib/midia/img/perdeu.png', 'perdi.png', mess.perde(xpPerdeu))
+							await sleep(1000)
+							await addXp(user, xpPerdeu, nivel)
+
 						}
-						break*/
+						//adiciona limite
+						await addLimit(user, daily)
+					}
+				break
 
-					case 'roleta':
-					case 'aposta':
-						if (!xp.includes(groupId)) return await kaotic(from, mess.xpGrupo(pushname, name, chat.groupMetadata.owner.replace('@c.us', '')))
-						const xpPessoa = await getXp(user, nivel)
-						const xpMinimo = parseInt(xpPessoa / 2, 10)
+				
 
-						if(isNaN(args[0]) || !numInt(args[0]) || parseInt(args[0]) < xpMinimo || parseInt(args[0]) < 250) return await kaotic.reply(from, mess.praposta(xpPessoa, xpMinimo), id)
-						var xpGanhou = math.floor(math.random() * milSort) + parseInt(args[0])
-						var xpPerdeu = math.floor(math.random() * -milSort) - parseInt(args[0])
-						const limiteJogou = await getLimit(user, daily)
+			case 'bfigurinha':
+				if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'palavras/words/números/numbers.', id)
+				await kaotic.reply(from, mess.entendido(), id)
+				const stkm = await fetch(`https://api.fdci.se/sosmed/rep.php?gambar=${encodeURIComponent(body.slice(12))}`)
+				const stimg = await stkm.json()
+				let stkfm = stimg[Math.floor(Math.random() * stimg.length) + 1]
+				if (stkfm == null) return await kaotic.reply(from, mess.noResultado(), id)
+				await kaotic.sendStickerfromUrl(from, stkfm, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
+				break
 
-						/*if(limiteJogou !== undefined && cd - (Date.now() - limiteJogou) > 0) {
-							return await kaotic.reply(from, mess.limitejogo(), id)
-						}*/
-						
-							if(side == 1){
-								await kaotic.sendFile(from, './lib/midia/img/perdeu.png', 'perdi.png',mess.perde(xpPerdeu))
-								await sleep(1000)
-								await addXp(user, xpPerdeu, nivel)
-							}else{
-								await kaotic.sendFile(from, './lib/midia/img/win.jpg', 'venceu.jpg', mess.ganho(xpGanhou))
-								await sleep(1000)
-								await addXp(user, xpGanhou, nivel)
-							}
-							//await addLimit(user, daily)
-						
-
-
-					break
-										
 			case 'stickergif':
 			case 'gif':
 			case 'g':
@@ -1075,9 +1160,9 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.sendMp4AsSticker(from, mediaData, null, { stickerMetadata: true, pack: config.pack, author: config.author, fps: 10, crop: true, loop: 0 }).catch(async () => { await kaotic.reply(from, mess.gifail(), id) })
 				}
 
-					else return await kaotic.reply(from, mess.videoOuGif(pushname), id)
+				else return await kaotic.reply(from, mess.videoOuGif(pushname), id)
 
-			break
+				break
 
 			case 'license':
 			case 'licenca':
@@ -1088,7 +1173,7 @@ module.exports = kconfig = async (kaotic, message) => {
 				kaotic.sendTextWithMentions(from, mess.licenca())
 				kaotic.sendPtt(from, './lib/midia/audio/termos.mp3')
 
-			break
+				break
 
 			case 'attp':
 				if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'palavras/words/números/numbers.', id)
@@ -1098,30 +1183,135 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.sendImageAsSticker(from, attp, { author: config.author, pack: config.pack, keepScale: true })
 				})
 				break
-	
-				case 'nobg':
-					if (isMedia && type === 'image' || isQuotedImage) {
-						const nobgmd = isQuotedImage ? quotedMsg : message
-						const mediaData = await decryptMedia(nobgmd, uaOverride)
-						const imageBase64 = `data:${nobgmd.mimetype};base64,${mediaData.toString('base64')}`
-						await kaotic.reply(from, mess.entendido(), id) 
-						const base64img = imageBase64
-						const outFile = `./lib/media/img/${user.replace('@c.us', '')}noBg.png`
-						var result = await removeBackgroundFromImageBase64({ base64img, apiKey: config.nobg, size: 'auto', type: 'auto', outFile })
-						await fs.writeFile(outFile, result.base64img)
-						await kaotic.sendImageAsSticker(from, `data:${nobgmd.mimetype};base64,${result.base64img}`, { pack: config.pack, author: config.author, keepScale: true })
-						await kaotic.reply(from, mess.nobgms(), id)
-						await sleep(10000).then(async () => { await fs.unlinkSync(`./lib/media/img/${user.replace('@c.us', '')}noBg.png`) })
-					} else return await kaotic.reply(from, mess.soimg(), id)
+
+			case 'nobg':
+				if (isMedia && type === 'image' || isQuotedImage) {
+					const nobgmd = isQuotedImage ? quotedMsg : message
+					const mediaData = await decryptMedia(nobgmd, uaOverride)
+					const imageBase64 = `data:${nobgmd.mimetype};base64,${mediaData.toString('base64')}`
+					await kaotic.reply(from, mess.entendido(), id)
+					const base64img = imageBase64
+					const outFile = `./lib/media/img/${user.replace('@c.us', '')}noBg.png`
+					var result = await removeBackgroundFromImageBase64({ base64img, apiKey: config.nobg, size: 'auto', type: 'auto', outFile })
+					await fs.writeFile(outFile, result.base64img)
+					await kaotic.sendImageAsSticker(from, `data:${nobgmd.mimetype};base64,${result.base64img}`, { pack: config.pack, author: config.author, keepScale: true })
+					await kaotic.reply(from, mess.nobgms(), id)
+					await sleep(10000).then(async () => { await fs.unlinkSync(`./lib/media/img/${user.replace('@c.us', '')}noBg.png`) })
+				} else return await kaotic.reply(from, mess.soimg(), id)
+				break
+
+			case 'emoji':
+				if (args.length == 0) return await kaotic.reply(from, mess.nocomando() + 'emoji.', id)
+				emoji.get(args[0]).then(async (emoji) => {
+					await sleep(3000)
+					if (emoji.emoji == null) return await kaotic.reply(from, mess.noemoji(), id)
+					let moji = `Emoji: ${emoji.emoji}\n\nUnicode: ${emoji.unicode}\n\nNome: ${emoji.name}\n\nInformações: ${emoji.description}\n\n`
+					for (let i = 0; i < emoji.images.length; i++) { moji += `${emoji.images[i].vendor} → ${emoji.images[i].url}\n\n═════════════════\n\n` }
+					await kaotic.reply(from, moji + mess.emojis(), id)
+					await kaotic.sendStickerfromUrl(from, emoji.images[0].url, { method: 'get' }, { author: config.author, pack: config.pack, keepScale: true })
+				})
+				break
+
+				case 'roubar':
+					if (quotedMsg && quotedMsg.type == 'sticker' && arks.includes('|')) {
+						await kaotic.reply(from, mess.wait(), id)
+						const stickerMeta = await decryptMedia(quotedMsg)
+						const packName = arg.split('|')[0]
+						const authorName = arg.split('|')[1]
+						await kaotic.sendImageAsSticker(from, `data:${quotedMsg.mimetype};base64,${stickerMeta.toString('base64')}`, { author: authorName, pack: packName })
+					} else return await kaotic.reply(from, mess.nofigu() + '\n\n' + mess.argsbar() + 'use 1 "|".', id)
 					break
-		
+
+               case 'demote':;case 'demitir':
+			if (isGroupMsg && eAdm || isGroupMsg && isOwner) {
+				if (!botAdm) return await kaotic.reply(from, mess.botademin(), id)
+				if (quotedMsg) {
+					const demquo = quotedMsgObj.sender.id
+					if (!groupAdmins.includes(demquo)) return await kaotic.reply(from, mess.notadm, id)
+					await kaotic.sendTextWithMentions(from, mess.demitir(demquo))
+					await kaotic.demoteParticipant(groupId, demquo)
+				} else {
+					if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar(), id)
+					await kaotic.sendTextWithMentions(from, mess.demitir(mentionedJidList))
+					var isNaM = ''
+					for (let i = 0; i < mentionedJidList.length; i++) {
+						if (!groupAdmins.includes(mentionedJidList[i])) isNaM += `@${mentionedJidList[i].replace('@c.us', '')} `
+						await kaotic.demoteParticipant(groupId, mentionedJidList[i])
+					}
+					if (isNaM !== '') {
+						isNaM += `\n\n${mess.notadm()}`
+						await kaotic.sendTextWithMentions(from, isNaM, id)
+					}
+				}
+			} else if (isGroupMsg) {
+				await kaotic.reply(from, mess.soAdm(), id)
+			} else return await kaotic.reply(from, mess.soGrupo(), id)
+            break
+
+			case 'promote':;case 'promover':
+					if (isGroupMsg && eAdm || isGroupMsg && isOwner) {
+					if (!botAdm) return await kaotic.reply(from, mess.botademira(), id)
+					if (quotedMsg) {
+					const proquo = quotedMsgObj.sender.id
+					if (eAdm.includes(proquo)) return await kaotic.reply(from, mess.isadm(), id)
+					await kaotic.sendTextWithMentions(from, mess.promote(proquo))
+					await kaotic.promoteParticipant(groupId, proquo)
+					} else {
+					if (mentionedJidList.length == 0) return await kaotic.reply(from, mess.semmarcar(), id)
+					await kaotic.sendTextWithMentions(from, mess.promover(mentionedJidList))
+					var isPromo = ''
+					for (let i = 0; i < mentionedJidList.length; i++) {
+					if (eAdm.includes(mentionedJidList[i])) isPromo += `@${mentionedJidList[i].replace('@c.us', '')} `
+					await kaotic.promoteParticipant(groupId, mentionedJidList[i])
+						}
+					if (isPromo !== '') {
+						isPromo += `\n\n${mess.isadm()}`
+					await kaotic.sendTextWithMentions(from, isPromo, id)
+						}
+					}
+					} else if (isGroupMsg) {
+					await kaotic.reply(from, mess.soAdm(), id)
+					} else return await kaotic.reply(from, mess.soGrupo(), id)
+				break
+	
+				case 'ping':
+					const rTime = (seconds) => {
+						const pad = (s) => { return (s < 10 ? '0' : '') + s }
+						var hours = Math.floor(seconds / (60*60)); var minutes = Math.floor(seconds % (60*60) / 60); var seconds = Math.floor(seconds % 60)
+						return `${pad(hours)} horas | ${pad(minutes)} minutos | ${pad(seconds)} segundos - HH:MM:SS`
+					}
+					const osUptime = () => {
+						var up_sec = os.uptime(); var up_min = up_sec / 60; var up_hour = up_min / 60; up_sec = Math.floor(up_sec); up_min = Math.floor(up_min); up_hour = Math.floor(up_hour); up_hour = up_hour % 60; up_min = up_min % 60; up_sec = up_sec % 60
+						return `${up_hour} horas | ${up_min} minutos | ${up_sec} segundos - HH:MM:SS`
+					}
+					const ramMemory = () => {
+						var allRam = os.totalmem(); var kbRam = allRam/1024; var mbRam = kbRam/1024; var gbRam = mbRam/1024; kbRam = Math.floor(kbRam); mbRam = Math.floor(mbRam); gbRam = Math.floor(gbRam); mbRam = mbRam%1024; kbRam = kbRam%1024; allRam = allRam%1024;
+						return `${gbRam}GB | ${mbRam}MB | ${kbRam}KB | ${allRam} Bytes`
+					}
+					const timeBot = rTime(process.uptime())
+					const loadedMsg = await kaotic.getAmountOfLoadedMessages()
+					const chatIds = await kaotic.getAllChatIds()
+					const groups = await kaotic.getAllGroups()
+					const zapVer = await kaotic.getWAVersion()
+					const botBat = await kaotic.getBatteryLevel()
+					const isEnergy = await kaotic.getIsPlugged()
+					await kaotic.sendText(from, mess.info(timeBot, osUptime, ramMemory, os, loadedMsg, groups, chatIds, processTime, t, moment, zapVer, botBat, isEnergy))
+					break
+						
+			case 'teste':
+				await kaotic.sendFile(from, './here', 'hehe.png', `vaidaerro`)
+				break
 			default:
 
-				return await kaotic.reply(from, `Comando não existe`, id)
+				return await kaotic.reply(from, `⚠O comando ${body} não existe, caso tenha duvidas pode utilizar:\n\n${prefix}menu\n${prefix}comandos\n\nCaso tenha alguma duvida quanto ao comando pode digitar --help para obter uma ajuda!⚠`, id)
 
 		}
 
 	} catch (err) {
+		let { pushname, verifiedName, formattedName } = sender
+		pushname = pushname || verifiedName || formattedName
+		await kaotic.sendTextWithMentions(config.suporte, `⚠Obtive erros com o comando ${body}, o Usuario: @${sender.id} / ${pushname}!\n\nErro:\n${err}`)
+		await kaotic.reply(from, `⚠ Ops!\n\nObtive erros com esse comando, tome cuidado ao usa-lo, informei ao dono para que ele concerte!`, id)
 		console.log(cores('[FALHA GERAL]', 'red'), err)
 	}
 }
