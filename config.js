@@ -35,9 +35,10 @@ const sharp = require('sharp')
 
 
 // Utilidades
-const { cores, sleep, eLink, upload, muitoUsado, addFilter, traduzir, numInt } = require('./lib/funcoes')
+const { cores, tratarTelefone, sleep, eLink, upload, muitoUsado, addFilter, traduzir, numInt } = require('./lib/funcoes')
 const { getLevel, getMsg, getXp, addLevel, addXp, getRank, isWin, wait, addLimit, addMsg, getLimit, getRole } = require('./lib/gaming')
 const poll = require('./lib/poll')
+const { eReg, grupoVip, reg, vip } = require('./registro')
 const config = require('./lib/config/Bot/config.json')
 const key = require('./API-KEYS.json')
 const patents = require('./lib/config/Bot/patentes.json')
@@ -78,6 +79,9 @@ const atstk = JSON.parse(fs.readFileSync('./lib/config/Grupos/sticker.json'))
 const msgcount = JSON.parse(fs.readFileSync('./lib/config/Bot/msgcount.json'))
 const atlinks = JSON.parse(fs.readFileSync('./lib/config/Grupos/antilinks.json'))
 const trava = JSON.parse(fs.readFileSync('./lib/config/Grupos/antitrava.json'))
+const registros = JSON.parse(fs.readFileSync('./registros.json'))
+const vips = JSON.parse(fs.readFileSync('./vip.json'))
+const gruposVip = JSON.parse(fs.readFileSync('./gruposVip.json'))
 
 module.exports = kconfig = async (kaotic, message) => {
 
@@ -118,6 +122,9 @@ module.exports = kconfig = async (kaotic, message) => {
 		const eDono = ownerNumber.includes(user)
 		const autoSticker = isGroupMsg ? atstk.includes(groupId) : false
 		const isOwner = ownerNumber.includes(user)
+		const eRegistrado = eReg(user, registros)
+		const eVip = eReg(user, vips)
+		const gVip = eReg(groupId, gruposVip)
 
 
 		//tempo
@@ -692,6 +699,23 @@ module.exports = kconfig = async (kaotic, message) => {
 
 		}
 		switch (command) {
+			// AREA DE TESTES \\
+			case 'vip':
+				if(!eDono) return kaotic.reply(from, mess.soDono(pushname, config.nomeDono1, config.nomeDono2), id)
+				if(args.length <= 2 ||arg.split == 0) return await kaotic.reply(from, `faltando coisa ae`, id)
+				var numero = await tratarTelefone(args[0])
+				const ids = numero.concat('@c.us')
+				const idade = Number(args[1])
+				const nome = arg.split('|')[1]
+
+				const regis = await eReg(ids, vips)
+				if(regis){
+					return await kaotic.reply(from, `já ta`, id)
+				}
+				await vip(ids, nome, idade, vips)
+				await kaotic.reply(from, mess.pronto(pushname), id)
+				break
+			// FIM AREA DE TESTES \\
 
 			case 'grupo': //abre e fecha o grupo
 				if (!isGroupMsg) return await kaotic.reply(from, mess.soGrupo(pushname), id)
@@ -1298,12 +1322,10 @@ module.exports = kconfig = async (kaotic, message) => {
 					await kaotic.sendText(from, mess.info(timeBot, osUptime, ramMemory, os, loadedMsg, groups, chatIds, processTime, t, moment, zapVer, botBat, isEnergy))
 					break
 						
-			case 'teste':
-				await kaotic.sendFile(from, './here', 'hehe.png', `vaidaerro`)
-				break
+			
 			default:
 
-				return await kaotic.reply(from, `⚠O comando ${body} não existe, caso tenha duvidas pode utilizar:\n\n${prefix}menu\n${prefix}comandos\n\nCaso tenha alguma duvida quanto ao comando pode digitar --help para obter uma ajuda!⚠`, id)
+				return await kaotic.reply(from, `Comando não existe`, id)
 
 		}
 
